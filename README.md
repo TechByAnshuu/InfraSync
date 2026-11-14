@@ -154,7 +154,7 @@ InfraSync/
 
 3. **Validate Nagios Configuration**:
    ```bash
-   sudo /usr/sbin/nagios4 -v /etc/nagios4/nagios4.cfg
+   sudo /usr/sbin/nagios4 -v /etc/nagios4/nagios.cfg
    # Ensure "Total Warnings: 0" and "Total Errors: 0"
    ```
 
@@ -221,7 +221,7 @@ This prevents unauthorized execution of arbitrary root commands or Docker contai
 | `docker permission denied` | User not in docker group | Run `sudo usermod -aG docker $USER` and re-login |
 | `HAProxy container exits` | Syntax error in `haproxy.cfg` | Run `docker logs haproxy` to pinpoint line error |
 | `Nagios 404 / 401 Unauthorized` | Apache digest auth realm mismatch | Ensure realm in `htdigest` is `Nagios4`, run `sudo a2enmod auth_digest cgi && sudo systemctl restart apache2` |
-| `Nagios config check fails` | Syntax error in `lab.cfg` | Run `sudo /usr/sbin/nagios4 -v /etc/nagios4/nagios4.cfg` |
+| `Nagios config check fails` | Syntax error in `lab.cfg` | Run `sudo /usr/sbin/nagios4 -v /etc/nagios4/nagios.cfg` |
 | `Auto-remediation not firing` | Flag file missing or state still SOFT | Check `/etc/nagios4/remediation.enabled` and test via `sudo -u nagios sudo -n /usr/bin/docker start web1` |
 
 ---

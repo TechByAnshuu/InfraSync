@@ -347,7 +347,7 @@ ansible-playbook -i inventory.ini playbook.yml --ask-become-pass</pre>
   <p>Enter your Ubuntu user password when prompted for become pass.</p>
 
   <h3>Step 4.3: Validate Nagios Configuration</h3>
-  <pre>sudo /usr/sbin/nagios4 -v /etc/nagios4/nagios4.cfg</pre>
+  <pre>sudo /usr/sbin/nagios4 -v /etc/nagios4/nagios.cfg</pre>
   <p>Check the bottom of output: <strong>Total Warnings: 0</strong> and <strong>Total Errors: 0</strong>.</p>
 
   <h3>Step 4.4: Verify Nagios Dashboard in Browser</h3>
@@ -484,7 +484,7 @@ journalctl -t nagios-remediation -f</pre>
       <tr>
         <td><strong>Nagios config validation error</strong></td>
         <td>Typo or missing directive in <code>/etc/nagios4/conf.d/lab.cfg</code>.</td>
-        <td>Run <code>sudo nagios4 -v /etc/nagios4/nagios4.cfg</code>; read the exact line number reported and fix in <code>ansible/templates/lab.cfg.j2</code>.</td>
+        <td>Run <code>sudo nagios4 -v /etc/nagios4/nagios.cfg</code>; read the exact line number reported and fix in <code>ansible/templates/lab.cfg.j2</code>.</td>
       </tr>
       <tr>
         <td><strong>Remediation does not restart container</strong></td>

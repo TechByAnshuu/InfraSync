@@ -413,21 +413,21 @@
           <span style="font-size:0.75rem; text-transform:none;">Algorithm: Round Robin</span>
         </div>
         <div class="cluster-nodes">
-          <div class="node-chip ${name == 'web1' ? 'active' : ''}">
+          <div class="node-chip ${name == "web1" ? "active" : ""}">
             <div class="chip-indicator"></div>
             <div class="chip-info">
               <span class="chip-name">web1</span>
               <span class="chip-port">:8081</span>
             </div>
           </div>
-          <div class="node-chip ${name == 'web2' ? 'active' : ''}">
+          <div class="node-chip ${name == "web2" ? "active" : ""}">
             <div class="chip-indicator"></div>
             <div class="chip-info">
               <span class="chip-name">web2</span>
               <span class="chip-port">:8082</span>
             </div>
           </div>
-          <div class="node-chip ${name == 'web3' ? 'active' : ''}">
+          <div class="node-chip ${name == "web3" ? "active" : ""}">
             <div class="chip-indicator"></div>
             <div class="chip-info">
               <span class="chip-name">web3</span>

@@ -1,0 +1,70 @@
+---
+- name: Install and configure Nagios monitoring with auto-remediation
+  hosts: monitor
+  become: true
+  vars:
+    containers:
+      - { name: web1, port: 8081 }
+      - { name: web2, port: 8082 }
+      - { name: web3, port: 8083 }
+
+  tasks:
+    - name: Install Nagios and plugins
+      ansible.builtin.apt:
+        name:
+          - nagios4
+          - monitoring-plugins-basic
+          - monitoring-plugins-standard
+          - apache2-utils
+        state: present
+        update_cache: true
+
+    - name: Make sure the Nagios config directory exists
+      ansible.builtin.file:
+        path: /etc/nagios4/conf.d
+        state: directory
+        mode: "0755"
+
+    - name: Deploy restart script
+      ansible.builtin.copy:
+        src: ../scripts/restart_container.sh
+        dest: /usr/local/bin/restart_container.sh
+        mode: "0755"
+
+    - name: Switch remediation ON (flag file)
+      ansible.builtin.copy:
+        content: "enabled\n"
+        dest: /etc/nagios4/remediation.enabled
+        force: false
+        mode: "0644"
+
+    - name: Allow nagios user to start only the three backend containers
+      ansible.builtin.copy:
+        dest: /etc/sudoers.d/nagios-docker
+        content: |
+          nagios ALL=(root) NOPASSWD: /usr/bin/docker start web1, /usr/bin/docker start web2, /usr/bin/docker start web3
+        mode: "0440"
+        validate: /usr/sbin/visudo -cf %s
+
+    - name: Deploy Nagios service definitions
+      ansible.builtin.template:
+        src: templates/lab.cfg.j2
+        dest: /etc/nagios4/conf.d/lab.cfg
+        mode: "0644"
+      notify: Restart nagios
+
+    - name: Validate Nagios configuration
+      ansible.builtin.command: /usr/sbin/nagios4 -v /etc/nagios4/nagios4.cfg
+      changed_when: false
+
+    - name: Ensure Nagios is enabled and running
+      ansible.builtin.service:
+        name: nagios4
+        state: started
+        enabled: true
+
+  handlers:
+    - name: Restart nagios
+      ansible.builtin.service:
+        name: nagios4
+        state: restarted

@@ -1,0 +1,37 @@
+# ==========================================
+# Documents & Office Reports (Do not push to VM repo)
+# ==========================================
+*.pdf
+*.docx
+*.doc
+*.pptx
+*.ppt
+*.xlsx
+*.xls
+~$*
+
+# ==========================================
+# Terraform State & Cache
+# ==========================================
+.terraform/
+*.tfstate
+*.tfstate.*
+*.tfstate.backup
+.terraform.lock.hcl
+
+# ==========================================
+# Ansible Retry & Logs
+# ==========================================
+*.retry
+*.log
+
+# ==========================================
+# OS, Editor & IDE Junk
+# ==========================================
+.DS_Store
+Thumbs.db
+desktop.ini
+*.swp
+*~
+.idea/
+.vscode/

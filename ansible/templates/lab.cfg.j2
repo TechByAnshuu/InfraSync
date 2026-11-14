@@ -1,0 +1,33 @@
+define command {
+    command_name    check_http_port
+    command_line    $USER1$/check_http -H 127.0.0.1 -p $ARG1$ -t 5
+}
+
+define command {
+    command_name    restart_container
+    command_line    /usr/local/bin/restart_container.sh "$SERVICESTATE$" "$SERVICESTATETYPE$" "$ARG1$"
+}
+
+{% for c in containers %}
+define service {
+    use                     generic-service
+    host_name               localhost
+    service_description     Backend {{ c.name }}
+    check_command           check_http_port!{{ c.port }}
+    check_interval          1
+    retry_interval          1
+    max_check_attempts      3
+    event_handler           restart_container!{{ c.name }}
+    event_handler_enabled   1
+}
+{% endfor %}
+
+define service {
+    use                     generic-service
+    host_name               localhost
+    service_description     HAProxy Load Balancer
+    check_command           check_http_port!8080
+    check_interval          1
+    retry_interval          1
+    max_check_attempts      3
+}

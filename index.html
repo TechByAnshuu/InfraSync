@@ -1,0 +1,1808 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>InfraSync · Control Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Outfit:wght@200;300;400;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════
+   DESIGN TOKENS
+═══════════════════════════════════════════════ */
+:root {
+  --bg-app:#101014; --bg-deep:#0A0A0A;
+  --surface-1:#17161B; --surface-2:#1C1C21; --surface-3:#26262B;
+  --border:rgba(255,255,255,.07); --border-strong:#29282D;
+  --text:#F2F5F3; --text-2:#A8A8B0; --text-3:#8A8A92;
+  --mint:#3FAF82; --mint-bright:#5FD4A4; --mint-deep:#1D3C34;
+  --lime:#B6FF58; --lime-mid:#99E33B; --lime-deep:#1B2310; --lime-tint:#202715;
+  --ok:#10B981; --warn:#F59E0B; --crit:#EF4444; --unknown:#8A8A92;
+  --web1:#3B82F6; --web2:#10B981; --web3:#F59E0B;
+  --r-shell:28px; --r-card:20px; --r-tile:14px; --r-pill:999px;
+  --gap:16px; --pad:24px;
+  --font-ui:'Manrope','Inter',system-ui,'Segoe UI',sans-serif;
+  --font-num:'Outfit','Manrope',system-ui,sans-serif;
+  --font-mono:'JetBrains Mono',ui-monospace,Consolas,monospace;
+  --vm:192.168.59.138;
+}
+/* ═══════════════════════════════════════════════
+   RESET
+═══════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{font-size:14px;scroll-behavior:smooth;}
+body{
+  font-family:var(--font-ui);
+  background:var(--bg-app);
+  color:var(--text);
+  min-height:100vh;
+  overflow-x:hidden;
+}
+a{color:inherit;text-decoration:none;}
+button{font-family:var(--font-ui);cursor:pointer;border:none;background:none;}
+:focus-visible{outline:2px solid var(--lime);outline-offset:2px;}
+
+/* ═══════════════════════════════════════════════
+   SHELL / TOP BAR
+═══════════════════════════════════════════════ */
+.shell{
+  display:flex;
+  flex-direction:column;
+  min-height:100vh;
+}
+.topbar{
+  position:sticky; top:0; z-index:200;
+  height:64px;
+  display:flex; align-items:center; justify-content:space-between;
+  padding:0 24px;
+  background:var(--bg-deep);
+  border-bottom:1px solid var(--border);
+}
+.topbar-left{display:flex;align-items:center;gap:14px;}
+.logo{
+  display:flex;align-items:center;gap:10px;
+  font-family:var(--font-ui);font-weight:700;font-size:1.05rem;letter-spacing:-.01em;
+}
+.logo-hex{
+  width:34px;height:34px;
+  background:linear-gradient(135deg,var(--mint) 0%,var(--mint-bright) 100%);
+  clip-path:polygon(50% 0%,93% 25%,93% 75%,50% 100%,7% 75%,7% 25%);
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;
+}
+.logo-hex svg{color:#0a120d;}
+.topbar-nav{
+  display:flex;align-items:center;gap:4px;
+  background:var(--surface-1);
+  border:1px solid var(--border);
+  border-radius:var(--r-pill);
+  padding:4px;
+}
+.nav-pill{
+  padding:6px 14px;
+  border-radius:var(--r-pill);
+  font-size:.8rem;font-weight:500;
+  color:var(--text-3);
+  transition:all .2s;
+  cursor:pointer;
+  white-space:nowrap;
+}
+.nav-pill:hover{color:var(--text-2);}
+.nav-pill.active{
+  background:var(--lime-tint);
+  color:var(--lime);
+  font-weight:600;
+}
+.topbar-right{display:flex;align-items:center;gap:10px;}
+.search-bar{
+  display:flex;align-items:center;gap:8px;
+  background:var(--surface-1);
+  border:1px solid var(--border);
+  border-radius:var(--r-pill);
+  padding:6px 14px;
+  font-size:.8rem;color:var(--text-3);
+  width:180px;
+}
+.search-bar svg{flex-shrink:0;color:var(--text-3);}
+.icon-btn{
+  width:36px;height:36px;
+  border-radius:50%;
+  background:var(--surface-1);
+  border:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+  color:var(--text-2);
+  transition:all .2s;
+}
+.icon-btn:hover{border-color:var(--mint);color:var(--mint);}
+.avatar-chip{
+  display:flex;align-items:center;gap:8px;
+  background:var(--surface-1);
+  border:1px solid var(--border);
+  border-radius:var(--r-pill);
+  padding:4px 12px 4px 4px;
+  font-size:.78rem;font-weight:600;
+}
+.avatar-dot{
+  width:28px;height:28px;border-radius:50%;
+  background:linear-gradient(135deg,var(--mint) 0%,var(--mint-bright) 100%);
+  display:flex;align-items:center;justify-content:center;
+  font-weight:700;font-size:.75rem;color:#0a120d;
+  flex-shrink:0;
+}
+
+/* ═══════════════════════════════════════════════
+   BODY — RAIL + CONTENT
+═══════════════════════════════════════════════ */
+.body-wrap{
+  display:flex;
+  flex:1;
+  gap:var(--gap);
+  padding:var(--gap);
+}
+/* Floating left rail */
+.rail{
+  width:64px;
+  flex-shrink:0;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:8px;
+  background:var(--surface-1);
+  border:1px solid var(--border);
+  border-radius:36px;
+  padding:14px 0;
+  position:sticky;
+  top:80px;
+  align-self:flex-start;
+  height:calc(100vh - 96px);
+}
+.rail-icon{
+  width:40px;height:40px;
+  border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  color:var(--text-3);
+  transition:all .2s;
+  cursor:pointer;
+  flex-shrink:0;
+}
+.rail-icon:hover{color:var(--mint);}
+.rail-icon.active{
+  background:linear-gradient(135deg,var(--mint-deep),rgba(63,175,130,.2));
+  color:var(--mint-bright);
+  box-shadow:0 0 16px rgba(63,175,130,.2);
+}
+.rail-sep{width:28px;height:1px;background:var(--border);margin:4px 0;}
+.rail-spacer{flex:1;}
+.theme-toggle{margin-top:auto;}
+
+/* Main content grid */
+.content{
+  flex:1;
+  min-width:0;
+  display:flex;
+  flex-direction:column;
+  gap:var(--gap);
+}
+
+/* ═══════════════════════════════════════════════
+   CARDS
+═══════════════════════════════════════════════ */
+.card{
+  background:var(--surface-1);
+  border:1px solid var(--border);
+  border-radius:var(--r-card);
+  padding:var(--pad);
+  position:relative;
+  overflow:hidden;
+}
+.card::before{
+  content:'';
+  position:absolute;
+  top:0;left:0;
+  width:160px;height:160px;
+  background:radial-gradient(circle at 0 0,rgba(255,255,255,.04) 0%,transparent 70%);
+  pointer-events:none;
+}
+.card-title{
+  font-size:.72rem;font-weight:600;
+  text-transform:uppercase;letter-spacing:.06em;
+  color:var(--text-3);
+  display:flex;align-items:center;gap:7px;
+  margin-bottom:16px;
+}
+.card-title svg{color:var(--mint);}
+
+/* ═══════════════════════════════════════════════
+   HERO SECTION
+═══════════════════════════════════════════════ */
+.hero-row{
+  display:grid;
+  grid-template-columns:1fr 1fr 1fr 1fr;
+  gap:var(--gap);
+}
+.hero-card{
+  grid-column:span 2;
+  background:linear-gradient(135deg,rgba(63,175,130,.12) 0%,var(--surface-1) 60%);
+  border-color:rgba(63,175,130,.2);
+}
+.hero-greeting{
+  font-size:.75rem;font-weight:600;text-transform:uppercase;letter-spacing:.08em;
+  color:var(--mint);
+  margin-bottom:8px;
+}
+.hero-num{
+  font-family:var(--font-num);
+  font-weight:300;
+  font-size:4.5rem;
+  letter-spacing:-.02em;
+  color:var(--mint-bright);
+  line-height:1;
+  margin-bottom:4px;
+}
+.hero-label{font-size:.88rem;color:var(--text-2);font-weight:400;margin-bottom:14px;}
+.hero-sub{font-size:.78rem;color:var(--text-3);font-family:var(--font-mono);}
+.hero-sub span{color:var(--ok);}
+/* stat cards */
+.stat-card{}
+.stat-chip{
+  display:inline-flex;align-items:center;gap:4px;
+  background:rgba(16,185,129,.12);
+  border:1px solid rgba(16,185,129,.2);
+  color:var(--ok);
+  border-radius:var(--r-pill);
+  padding:2px 8px;
+  font-size:.7rem;font-weight:600;
+  margin-bottom:10px;
+}
+.stat-chip.warn{background:rgba(245,158,11,.12);border-color:rgba(245,158,11,.2);color:var(--warn);}
+.stat-chip.info{background:rgba(63,175,130,.12);border-color:rgba(63,175,130,.2);color:var(--mint);}
+.stat-val{
+  font-family:var(--font-num);
+  font-weight:300;
+  font-size:2.4rem;
+  letter-spacing:-.02em;
+  color:var(--mint-bright);
+  line-height:1;
+  margin-bottom:4px;
+}
+.stat-label{font-size:.78rem;color:var(--text-2);}
+.stat-sub{font-size:.7rem;color:var(--text-3);margin-top:4px;}
+
+/* ═══════════════════════════════════════════════
+   TWO-COL GRID
+═══════════════════════════════════════════════ */
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:var(--gap);}
+.three-col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:var(--gap);}
+.full-width{grid-column:1/-1;}
+
+/* ═══════════════════════════════════════════════
+   NODE CARDS
+═══════════════════════════════════════════════ */
+.nodes-row{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--gap);}
+.node-card{
+  background:var(--surface-2);
+  border:1px solid var(--border);
+  border-radius:var(--r-card);
+  padding:20px;
+  transition:border-color .2s,box-shadow .2s;
+}
+.node-card:hover{border-color:rgba(63,175,130,.3);}
+.node-card.running{border-color:rgba(var(--node-rgb),.35);box-shadow:0 0 24px rgba(var(--node-rgb),.1);}
+.node-card.stopped{border-color:rgba(239,68,68,.35);}
+.node-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
+.node-name{font-family:var(--font-mono);font-size:1.05rem;font-weight:500;}
+.status-chip{
+  display:flex;align-items:center;gap:5px;
+  border-radius:var(--r-pill);
+  padding:3px 10px;
+  font-size:.7rem;font-weight:700;
+  letter-spacing:.02em;
+  transition:all .3s;
+}
+.status-chip.running{background:rgba(16,185,129,.12);border:1px solid rgba(16,185,129,.25);color:var(--ok);}
+.status-chip.stopped{background:rgba(239,68,68,.12);border:1px solid rgba(239,68,68,.25);color:var(--crit);}
+.status-chip .dot{width:6px;height:6px;border-radius:50%;background:currentColor;}
+.status-chip.running .dot{animation:pulse-dot 2s infinite;}
+@keyframes pulse-dot{0%,100%{opacity:1;}50%{opacity:.4;}}
+.node-meta{font-size:.75rem;color:var(--text-3);margin-bottom:16px;line-height:1.6;font-family:var(--font-mono);}
+.node-meta strong{color:var(--text-2);}
+.node-actions{display:flex;gap:8px;}
+.btn-node-stop{
+  flex:1;padding:7px 0;
+  background:rgba(239,68,68,.1);
+  border:1px solid rgba(239,68,68,.25);
+  color:#f87171;
+  border-radius:var(--r-tile);
+  font-size:.75rem;font-weight:600;
+  font-family:var(--font-ui);
+  transition:all .15s;
+}
+.btn-node-stop:hover{background:rgba(239,68,68,.2);border-color:rgba(239,68,68,.5);}
+.btn-node-stop:disabled{opacity:.35;cursor:not-allowed;}
+.btn-node-start{
+  flex:1;padding:7px 0;
+  background:rgba(63,175,130,.1);
+  border:1px solid rgba(63,175,130,.25);
+  color:var(--mint-bright);
+  border-radius:var(--r-tile);
+  font-size:.75rem;font-weight:600;
+  font-family:var(--font-ui);
+  transition:all .15s;
+}
+.btn-node-start:hover{background:rgba(63,175,130,.2);border-color:rgba(63,175,130,.5);}
+.btn-node-start:disabled{opacity:.35;cursor:not-allowed;}
+.btn-node-open{
+  padding:7px 14px;
+  background:var(--surface-3);
+  border:1px solid var(--border-strong);
+  color:var(--text-2);
+  border-radius:var(--r-tile);
+  font-size:.75rem;font-weight:600;
+  font-family:var(--font-ui);
+  transition:all .15s;
+}
+.btn-node-open:hover{border-color:var(--mint);color:var(--mint);}
+
+/* ═══════════════════════════════════════════════
+   ROUND-ROBIN BAR CHART (SVG)
+═══════════════════════════════════════════════ */
+.chart-area{position:relative;}
+.chart-controls{display:flex;align-items:center;gap:8px;margin-bottom:14px;flex-wrap:wrap;}
+.chart-legend{display:flex;gap:12px;flex-wrap:wrap;}
+.legend-item{display:flex;align-items:center;gap:5px;font-size:.72rem;color:var(--text-3);}
+.legend-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+.chart-svg-wrap{position:relative;overflow:visible;}
+.chart-tooltip{
+  position:absolute;
+  background:#fff;
+  color:#0A0A0A;
+  font-family:var(--font-ui);
+  font-size:.72rem;
+  font-weight:600;
+  padding:5px 10px;
+  border-radius:10px;
+  pointer-events:none;
+  opacity:0;
+  transition:opacity .15s;
+  white-space:nowrap;
+  z-index:10;
+  transform:translate(-50%,-110%);
+}
+.chart-tooltip::after{
+  content:'';
+  position:absolute;
+  bottom:-5px;left:50%;
+  transform:translateX(-50%);
+  border:5px solid transparent;
+  border-top-color:#fff;
+  border-bottom:0;
+}
+.bar-group:hover .chart-tooltip{opacity:1;}
+
+/* ═══════════════════════════════════════════════
+   HEALTH TIMELINE AREA CHART (SVG)
+═══════════════════════════════════════════════ */
+.health-svg{overflow:visible;}
+.live-dot{
+  filter:drop-shadow(0 0 6px var(--mint-bright));
+  animation:glow-pulse 2s infinite;
+}
+@keyframes glow-pulse{0%,100%{opacity:1;}50%{opacity:.6;}}
+
+/* ═══════════════════════════════════════════════
+   NAGIOS ATTEMPT SEGMENTS
+═══════════════════════════════════════════════ */
+.nagios-nodes{display:flex;flex-direction:column;gap:14px;}
+.nagios-row{display:flex;align-items:center;gap:12px;}
+.nagios-name{font-family:var(--font-mono);font-size:.82rem;font-weight:500;width:40px;flex-shrink:0;}
+.nagios-segs{display:flex;gap:4px;flex:1;}
+.seg{
+  flex:1;height:8px;border-radius:4px;
+  background:var(--surface-3);
+  transition:background .4s;
+}
+.seg.soft-1{background:var(--warn);}
+.seg.soft-2{background:#fb923c;}
+.seg.soft-3{background:var(--crit);opacity:.7;}
+.seg.hard{background:var(--crit);}
+.nagios-state{font-size:.72rem;font-weight:700;width:80px;text-align:right;}
+.nagios-state.ok{color:var(--ok);}
+.nagios-state.soft{color:var(--warn);}
+.nagios-state.hard{color:var(--crit);}
+
+/* ═══════════════════════════════════════════════
+   KILLSWITCH CARD
+═══════════════════════════════════════════════ */
+.killswitch-card{
+  background:linear-gradient(135deg,var(--lime-tint) 0%,var(--surface-1) 100%);
+  border-color:rgba(182,255,88,.15);
+}
+.ks-row{display:flex;align-items:center;justify-content:space-between;gap:16px;}
+.ks-info{}
+.ks-label{font-size:.88rem;font-weight:600;margin-bottom:4px;}
+.ks-sub{font-size:.75rem;color:var(--text-3);font-family:var(--font-mono);line-height:1.5;}
+.ks-toggle{
+  display:flex;align-items:center;gap:10px;flex-shrink:0;
+}
+.toggle-track{
+  width:48px;height:26px;
+  border-radius:13px;
+  background:var(--surface-3);
+  border:1px solid var(--border-strong);
+  position:relative;
+  cursor:pointer;
+  transition:background .3s;
+  flex-shrink:0;
+}
+.toggle-track.on{background:var(--lime);border-color:var(--lime-mid);}
+.toggle-thumb{
+  width:20px;height:20px;
+  border-radius:50%;
+  background:#fff;
+  position:absolute;
+  top:2px;left:2px;
+  transition:transform .3s;
+  box-shadow:0 1px 4px rgba(0,0,0,.4);
+}
+.toggle-track.on .toggle-thumb{transform:translateX(22px);}
+.toggle-label{font-size:.78rem;font-weight:700;color:var(--text-3);}
+.toggle-track.on+.toggle-label{color:var(--lime);}
+.btn-ks{
+  display:inline-flex;align-items:center;gap:8px;
+  background:var(--lime);
+  color:#0A0A0A;
+  font-weight:700;
+  font-size:.8rem;
+  font-family:var(--font-ui);
+  padding:9px 20px;
+  border-radius:var(--r-pill);
+  transition:all .15s;
+  flex-shrink:0;
+}
+.btn-ks:hover{background:var(--lime-mid);transform:translateY(-1px);}
+
+/* ═══════════════════════════════════════════════
+   QUICK ACTIONS
+═══════════════════════════════════════════════ */
+.qa-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;}
+.qa-tile{
+  background:var(--surface-2);
+  border:1px solid var(--border);
+  border-radius:var(--r-tile);
+  padding:16px;
+  display:flex;flex-direction:column;align-items:flex-start;gap:10px;
+  cursor:pointer;
+  transition:all .2s;
+}
+.qa-tile:hover{border-color:var(--mint);background:rgba(63,175,130,.06);}
+.qa-icon{
+  width:36px;height:36px;
+  background:rgba(63,175,130,.12);
+  border-radius:10px;
+  display:flex;align-items:center;justify-content:center;
+  color:var(--mint);
+}
+.qa-label{font-size:.78rem;font-weight:600;color:var(--text);}
+.qa-sub{font-size:.7rem;color:var(--text-3);font-family:var(--font-mono);}
+
+/* ═══════════════════════════════════════════════
+   NODE SELECTOR CHIPS
+═══════════════════════════════════════════════ */
+.node-chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;}
+.node-chip-btn{
+  display:flex;align-items:center;gap:8px;
+  background:var(--surface-2);
+  border:1px solid var(--border);
+  border-radius:var(--r-pill);
+  padding:6px 14px;
+  font-size:.8rem;font-weight:600;
+  color:var(--text-2);
+  cursor:pointer;
+  transition:all .2s;
+  font-family:var(--font-ui);
+}
+.node-chip-btn .chip-dot{width:8px;height:8px;border-radius:50%;}
+.node-chip-btn:hover,.node-chip-btn.active{background:rgba(63,175,130,.08);border-color:rgba(63,175,130,.35);color:var(--text);}
+.node-chip-btn[data-node="web1"] .chip-dot{background:var(--web1);}
+.node-chip-btn[data-node="web2"] .chip-dot{background:var(--web2);}
+.node-chip-btn[data-node="web3"] .chip-dot{background:var(--web3);}
+.node-chip-btn[data-node="haproxy"] .chip-dot{background:var(--mint);}
+
+/* ═══════════════════════════════════════════════
+   EVENT LOG (TERMINAL)
+═══════════════════════════════════════════════ */
+.event-log{
+  background:var(--bg-deep);
+  border:1px solid var(--border-strong);
+  border-radius:var(--r-tile);
+  padding:14px 16px;
+  font-family:var(--font-mono);
+  font-size:.75rem;
+  color:var(--text-3);
+  min-height:100px;
+  max-height:160px;
+  overflow-y:auto;
+}
+.event-log .log-ts{color:var(--text-3);}
+.event-log .log-ok{color:var(--ok);}
+.event-log .log-warn{color:var(--warn);}
+.event-log .log-crit{color:var(--crit);}
+.event-log .log-nagios{color:var(--mint-bright);}
+.event-log .log-info{color:var(--text-2);}
+
+/* ═══════════════════════════════════════════════
+   SEND REQUEST CONTROLS
+═══════════════════════════════════════════════ */
+.ctrl-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px;}
+.btn-primary{
+  display:inline-flex;align-items:center;gap:7px;
+  background:var(--mint);
+  color:#0a120d;
+  font-weight:700;font-size:.8rem;
+  font-family:var(--font-ui);
+  padding:9px 20px;
+  border-radius:var(--r-pill);
+  transition:all .15s;
+}
+.btn-primary:hover{background:var(--mint-bright);transform:translateY(-1px);}
+.btn-secondary{
+  display:inline-flex;align-items:center;gap:7px;
+  background:var(--surface-2);
+  border:1px solid var(--border);
+  color:var(--text-2);
+  font-weight:600;font-size:.8rem;
+  font-family:var(--font-ui);
+  padding:9px 20px;
+  border-radius:var(--r-pill);
+  transition:all .15s;
+}
+.btn-secondary:hover{border-color:var(--mint);color:var(--mint);}
+.speed-sel{
+  background:var(--surface-2);
+  border:1px solid var(--border);
+  color:var(--text-2);
+  border-radius:var(--r-pill);
+  padding:7px 14px;
+  font-size:.78rem;
+  font-family:var(--font-ui);
+  outline:none;
+}
+.speed-sel:focus{border-color:var(--mint);}
+.demo-badge{
+  font-size:.7rem;font-weight:600;text-transform:uppercase;letter-spacing:.04em;
+  color:var(--warn);
+  background:rgba(245,158,11,.1);
+  border:1px solid rgba(245,158,11,.2);
+  border-radius:var(--r-pill);
+  padding:3px 10px;
+}
+
+/* ═══════════════════════════════════════════════
+   ARCHITECTURE SECTION
+═══════════════════════════════════════════════ */
+#section-architecture{display:none;}
+.arch-tier{
+  display:flex;flex-direction:column;gap:8px;
+}
+.arch-tier-label{
+  font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;
+  color:var(--text-3);
+  margin-bottom:4px;
+}
+.arch-tier-cards{display:flex;gap:10px;flex-wrap:wrap;}
+.arch-node{
+  background:var(--surface-2);
+  border:1px solid var(--border);
+  border-radius:var(--r-tile);
+  padding:14px 18px;
+  display:flex;align-items:center;gap:10px;
+  flex:1;min-width:140px;
+  transition:border-color .2s;
+}
+.arch-node:hover{border-color:var(--mint);}
+.arch-icon{
+  width:32px;height:32px;
+  border-radius:8px;
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;
+}
+.arch-title{font-size:.82rem;font-weight:600;}
+.arch-sub{font-size:.7rem;color:var(--text-3);}
+.arch-connector{
+  width:2px;
+  height:28px;
+  background:linear-gradient(to bottom,var(--mint),transparent);
+  margin:4px auto;
+  opacity:.4;
+}
+
+/* ═══════════════════════════════════════════════
+   TEST MATRIX
+═══════════════════════════════════════════════ */
+#section-tests{display:none;}
+.test-table-wrap{overflow-x:auto;}
+.test-table{width:100%;border-collapse:collapse;}
+.test-table th{
+  text-align:left;font-size:.7rem;font-weight:600;text-transform:uppercase;
+  letter-spacing:.06em;color:var(--text-3);
+  padding:10px 14px;border-bottom:1px solid var(--border-strong);
+}
+.test-table td{
+  padding:12px 14px;border-bottom:1px solid var(--border);
+  font-size:.82rem;color:var(--text-2);vertical-align:top;
+}
+.test-table tr:last-child td{border-bottom:none;}
+.test-table tr:hover td{background:rgba(255,255,255,.02);}
+.pass-chip{
+  display:inline-flex;align-items:center;gap:4px;
+  background:rgba(16,185,129,.12);
+  border:1px solid rgba(16,185,129,.2);
+  color:var(--ok);
+  border-radius:var(--r-pill);
+  padding:2px 8px;
+  font-size:.7rem;font-weight:700;
+}
+.test-id{font-family:var(--font-mono);color:var(--mint);font-weight:500;}
+
+/* ═══════════════════════════════════════════════
+   COMMANDS
+═══════════════════════════════════════════════ */
+#section-commands{display:none;}
+.cmd-block{
+  background:var(--bg-deep);
+  border:1px solid var(--border-strong);
+  border-radius:var(--r-tile);
+  padding:16px;
+  margin-bottom:10px;
+  position:relative;
+}
+.cmd-label{font-size:.7rem;font-weight:600;text-transform:uppercase;letter-spacing:.04em;
+  color:var(--text-3);margin-bottom:8px;}
+.cmd-code{font-family:var(--font-mono);font-size:.8rem;color:var(--mint-bright);line-height:1.6;white-space:pre-wrap;}
+.cmd-copy{
+  position:absolute;top:12px;right:12px;
+  padding:4px 10px;
+  background:var(--surface-2);
+  border:1px solid var(--border);
+  color:var(--text-3);
+  border-radius:6px;
+  font-size:.7rem;font-weight:600;
+  font-family:var(--font-ui);
+  transition:all .15s;
+}
+.cmd-copy:hover{border-color:var(--mint);color:var(--mint);}
+.cmd-copy.copied{color:var(--ok);border-color:rgba(16,185,129,.3);}
+
+/* ═══════════════════════════════════════════════
+   VIVA QA ACCORDION
+═══════════════════════════════════════════════ */
+#section-viva{display:none;}
+.viva-item{
+  border:1px solid var(--border);
+  border-radius:var(--r-tile);
+  margin-bottom:8px;
+  overflow:hidden;
+}
+.viva-q{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:14px 18px;
+  cursor:pointer;
+  font-size:.88rem;font-weight:600;
+  transition:background .2s;
+}
+.viva-q:hover{background:rgba(63,175,130,.05);}
+.viva-arrow{transition:transform .25s;color:var(--text-3);flex-shrink:0;}
+.viva-item.open .viva-arrow{transform:rotate(180deg);}
+.viva-a{
+  max-height:0;overflow:hidden;
+  transition:max-height .3s ease;
+  font-size:.82rem;color:var(--text-2);line-height:1.6;
+}
+.viva-a-inner{padding:0 18px 14px;}
+.viva-item.open .viva-a{max-height:400px;}
+
+/* ═══════════════════════════════════════════════
+   TOOL LINKS ROW
+═══════════════════════════════════════════════ */
+.links-row{
+  display:flex;gap:10px;flex-wrap:wrap;margin-top:8px;
+}
+.tool-link{
+  display:flex;align-items:center;gap:7px;
+  background:var(--surface-2);
+  border:1px solid var(--border);
+  color:var(--text-2);
+  border-radius:var(--r-tile);
+  padding:8px 16px;
+  font-size:.8rem;font-weight:600;
+  transition:all .2s;
+  cursor:pointer;
+  font-family:var(--font-ui);
+}
+.tool-link:hover{border-color:var(--mint);color:var(--mint);}
+.tool-link.primary-link{
+  background:var(--mint-deep);
+  border-color:rgba(63,175,130,.35);
+  color:var(--mint-bright);
+}
+.tool-link.primary-link:hover{background:rgba(63,175,130,.2);}
+
+/* ═══════════════════════════════════════════════
+   SCROLLBAR
+═══════════════════════════════════════════════ */
+::-webkit-scrollbar{width:4px;height:4px;}
+::-webkit-scrollbar-track{background:transparent;}
+::-webkit-scrollbar-thumb{background:var(--border-strong);border-radius:4px;}
+
+/* ═══════════════════════════════════════════════
+   RESPONSIVE
+═══════════════════════════════════════════════ */
+@media(max-width:1200px){
+  .hero-row{grid-template-columns:1fr 1fr;}
+  .hero-card{grid-column:span 2;}
+  .qa-grid{grid-template-columns:repeat(2,1fr);}
+}
+@media(max-width:900px){
+  .topbar-nav{display:none;}
+  .two-col,.nodes-row{grid-template-columns:1fr;}
+  .hero-row{grid-template-columns:1fr 1fr;}
+  .rail{display:none;}
+  .body-wrap{padding:10px;}
+  .bottom-nav{display:flex;}
+}
+@media(max-width:600px){
+  .topbar{padding:0 12px;}
+  .search-bar{display:none;}
+  .hero-row{grid-template-columns:1fr;}
+  .hero-card{grid-column:span 1;}
+  .qa-grid{grid-template-columns:1fr 1fr;}
+}
+.bottom-nav{
+  display:none;
+  position:fixed;bottom:0;left:0;right:0;
+  background:var(--surface-1);
+  border-top:1px solid var(--border);
+  justify-content:space-around;
+  padding:10px 0 max(10px,env(safe-area-inset-bottom));
+  z-index:200;
+}
+.bottom-nav-btn{
+  display:flex;flex-direction:column;align-items:center;gap:3px;
+  color:var(--text-3);font-size:.62rem;font-weight:600;
+  cursor:pointer;padding:0 8px;
+}
+.bottom-nav-btn.active{color:var(--mint);}
+@media(prefers-reduced-motion:reduce){
+  *{animation-duration:0.01ms!important;transition-duration:0.01ms!important;}
+}
+</style>
+</head>
+<body>
+<div class="shell">
+<!-- ═══ TOP BAR ═══ -->
+<header class="topbar" role="banner">
+  <div class="topbar-left">
+    <div class="logo" aria-label="InfraSync">
+      <div class="logo-hex" aria-hidden="true">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+        </svg>
+      </div>
+      InfraSync
+    </div>
+    <nav class="topbar-nav" role="navigation" aria-label="Main navigation">
+      <button class="nav-pill active" data-section="dashboard" onclick="switchSection('dashboard',this)">Dashboard</button>
+      <button class="nav-pill" data-section="architecture" onclick="switchSection('architecture',this)">Architecture</button>
+      <button class="nav-pill" data-section="lb" onclick="switchSection('lb',this)">Load Balancer</button>
+      <button class="nav-pill" data-section="monitoring" onclick="switchSection('monitoring',this)">Monitoring</button>
+      <button class="nav-pill" data-section="tests" onclick="switchSection('tests',this)">Test Cases</button>
+      <button class="nav-pill" data-section="commands" onclick="switchSection('commands',this)">Commands</button>
+      <button class="nav-pill" data-section="viva" onclick="switchSection('viva',this)">Viva Q&amp;A</button>
+    </nav>
+  </div>
+  <div class="topbar-right">
+    <div class="search-bar" role="search">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      Search commands…
+    </div>
+    <button class="icon-btn" aria-label="Notifications" id="bell-btn">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+    </button>
+    <div class="avatar-chip">
+      <div class="avatar-dot">AM</div>
+      Ansh Mishra &middot; Roll 50
+    </div>
+  </div>
+</header>
+
+<!-- ═══ BODY ═══ -->
+<div class="body-wrap">
+  <!-- Floating left rail -->
+  <nav class="rail" role="navigation" aria-label="Section navigation">
+    <button class="rail-icon active" aria-label="Dashboard" onclick="switchSection('dashboard',null)" title="Dashboard">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+    </button>
+    <button class="rail-icon" aria-label="Architecture" onclick="switchSection('architecture',null)" title="Architecture">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg>
+    </button>
+    <button class="rail-icon" aria-label="Load Balancer" onclick="switchSection('lb',null)" title="Load Balancer">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 20V10M12 20V4M6 20v-6"/></svg>
+    </button>
+    <button class="rail-icon" aria-label="Monitoring" onclick="switchSection('monitoring',null)" title="Monitoring">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+    </button>
+    <div class="rail-sep" role="separator"></div>
+    <button class="rail-icon" aria-label="Test Cases" onclick="switchSection('tests',null)" title="Test Cases">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="m9 11 3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+    </button>
+    <button class="rail-icon" aria-label="Commands" onclick="switchSection('commands',null)" title="Commands">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
+    </button>
+    <button class="rail-icon" aria-label="Viva Q&amp;A" onclick="switchSection('viva',null)" title="Viva Q&A">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+    </button>
+    <div class="rail-spacer"></div>
+    <button class="rail-icon theme-toggle" id="theme-btn" aria-label="Toggle theme" onclick="toggleTheme()">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+    </button>
+  </nav>
+
+  <!-- Main content -->
+  <main class="content" role="main">
+
+    <!-- ══ DASHBOARD SECTION ══ -->
+    <div id="section-dashboard">
+      <!-- Demo notice -->
+      <div style="display:flex;align-items:center;gap:8px;font-size:.75rem;color:var(--text-3);margin-bottom:4px;">
+        <span class="demo-badge">Demo Simulation</span>
+        Live status: Nagios at <span style="color:var(--mint);font-family:var(--font-mono)">192.168.59.138</span> &mdash; buttons below open real VM pages.
+      </div>
+
+      <!-- Hero + Stat row -->
+      <div class="hero-row">
+        <div class="card hero-card">
+          <div class="hero-greeting">Infrastructure Status</div>
+          <div class="hero-num" id="hero-ok-count" aria-live="polite">4/4</div>
+          <div class="hero-label">Services Healthy</div>
+          <div class="hero-sub">
+            <span>web1</span> · <span>web2</span> · <span>web3</span> · <span>HAProxy</span> are healthy
+          </div>
+        </div>
+        <div class="card stat-card">
+          <div class="card-title">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+            Resources Provisioned
+          </div>
+          <div class="stat-chip info">Terraform</div>
+          <div class="stat-val">7</div>
+          <div class="stat-label">IaC Resources</div>
+          <div class="stat-sub">network · 2 images · 3 nginx · haproxy</div>
+        </div>
+        <div class="card stat-card">
+          <div class="card-title">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 11 3 3L22 4"/></svg>
+            Tests Passed
+          </div>
+          <div class="stat-chip">8/8</div>
+          <div class="stat-val">8</div>
+          <div class="stat-label">TC01 → TC08</div>
+          <div class="stat-sub">all checks passing</div>
+        </div>
+        <div class="card stat-card">
+          <div class="card-title">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+            Check Interval
+          </div>
+          <div class="stat-chip info">Nagios</div>
+          <div class="stat-val">1<span style="font-size:1.2rem;font-weight:400">m</span></div>
+          <div class="stat-label">Probe Frequency</div>
+          <div class="stat-sub">max recovery ~3 min</div>
+        </div>
+      </div>
+
+      <!-- Tool links -->
+      <div class="links-row">
+        <a class="tool-link primary-link" href="http://192.168.59.138:8080" target="_blank" aria-label="Open InfraSync web app">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+          Web App :8080
+        </a>
+        <a class="tool-link primary-link" href="http://192.168.59.138:8081" target="_blank" aria-label="Open web1 directly">
+          <span style="width:8px;height:8px;border-radius:50%;background:var(--web1);display:inline-block;"></span>
+          web1 :8081
+        </a>
+        <a class="tool-link primary-link" href="http://192.168.59.138:8082" target="_blank" aria-label="Open web2 directly">
+          <span style="width:8px;height:8px;border-radius:50%;background:var(--web2);display:inline-block;"></span>
+          web2 :8082
+        </a>
+        <a class="tool-link primary-link" href="http://192.168.59.138:8083" target="_blank" aria-label="Open web3 directly">
+          <span style="width:8px;height:8px;border-radius:50%;background:var(--web3);display:inline-block;"></span>
+          web3 :8083
+        </a>
+        <a class="tool-link" href="http://192.168.59.138:8404/stats" target="_blank">HAProxy Stats :8404</a>
+        <a class="tool-link" href="http://192.168.59.138/nagios4/" target="_blank">Nagios Core 4</a>
+        <a class="tool-link" href="http://192.168.59.138:9090" target="_blank">Prometheus :9090</a>
+        <a class="tool-link" href="http://192.168.59.138:3000" target="_blank">Grafana :3000</a>
+      </div>
+
+      <!-- Demo simulation: Send Request + Chart + Nodes -->
+      <div class="two-col">
+        <!-- Round-robin chart -->
+        <div class="card">
+          <div class="card-title">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 20V10M12 20V4M6 20v-6"/></svg>
+            Round-Robin Distribution
+          </div>
+          <div class="ctrl-row">
+            <button class="btn-primary" onclick="sendRequest(1)" aria-label="Send one request">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+              Send Request
+            </button>
+            <button class="btn-secondary" onclick="sendRequest(6)" aria-label="Send six requests">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.2"/></svg>
+              Send ×6
+            </button>
+            <select class="speed-sel" id="speed-sel" aria-label="Demo speed">
+              <option value="1000">Demo (1s = 1 min)</option>
+              <option value="60000">Real (60 s = 1 min)</option>
+            </select>
+          </div>
+          <div class="chart-legend">
+            <div class="legend-item"><span class="legend-dot" style="background:var(--web1)"></span>web1</div>
+            <div class="legend-item"><span class="legend-dot" style="background:var(--web2)"></span>web2</div>
+            <div class="legend-item"><span class="legend-dot" style="background:var(--web3)"></span>web3</div>
+          </div>
+          <div class="chart-svg-wrap" style="margin-top:14px;position:relative;height:140px;">
+            <svg id="rr-chart" width="100%" height="140" viewBox="0 0 400 140" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Round-robin bar chart showing request distribution">
+              <g id="rr-bars"></g>
+              <g id="rr-labels"></g>
+            </svg>
+            <div class="chart-tooltip" id="rr-tooltip" role="tooltip" aria-live="polite"></div>
+          </div>
+        </div>
+
+        <!-- Health timeline -->
+        <div class="card">
+          <div class="card-title">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+            Health Timeline
+          </div>
+          <div style="position:relative;height:140px;margin-top:8px;">
+            <svg id="health-chart" width="100%" height="140" viewBox="0 0 400 140" preserveAspectRatio="none" class="health-svg" role="img" aria-label="Health timeline area chart"></svg>
+          </div>
+          <div style="display:flex;gap:12px;margin-top:8px;">
+            <div class="legend-item"><span class="legend-dot" style="background:var(--ok)"></span>OK</div>
+            <div class="legend-item"><span class="legend-dot" style="background:var(--crit)"></span>CRITICAL</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Node cards -->
+      <div class="card">
+        <div class="card-title">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+          Backend Containers
+        </div>
+        <div class="nodes-row" id="node-cards"></div>
+      </div>
+
+      <!-- Chaos / Killswitch + Nagios segments -->
+      <div class="two-col">
+        <!-- Killswitch -->
+        <div class="card killswitch-card">
+          <div class="card-title">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
+            Auto-Remediation Killswitch
+          </div>
+          <div class="ks-row">
+            <div class="ks-info">
+              <div class="ks-label" id="ks-label">Remediation: ON</div>
+              <div class="ks-sub">
+                File: /etc/nagios4/remediation.enabled<br>
+                HARD CRITICAL triggers restart_container.sh<br>
+                Only web1 · web2 · web3 allowed
+              </div>
+            </div>
+            <div class="ks-toggle">
+              <div class="toggle-track on" id="ks-track" onclick="toggleKillswitch()" role="switch" aria-checked="true" aria-label="Auto-remediation toggle" tabindex="0">
+                <div class="toggle-thumb"></div>
+              </div>
+              <span class="toggle-label" id="ks-toggle-label">ON</span>
+            </div>
+          </div>
+          <div style="margin-top:16px;">
+            <button class="btn-ks" onclick="triggerRemediation()">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.2"/></svg>
+              Force Remediation Check
+            </button>
+          </div>
+        </div>
+
+        <!-- Nagios attempt bar -->
+        <div class="card">
+          <div class="card-title">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            Nagios Check State Machine
+          </div>
+          <div class="nagios-nodes" id="nagios-segs"></div>
+          <div style="margin-top:12px;font-size:.72rem;color:var(--text-3)">
+            check_interval 1 min · max_check_attempts 3 · recovery ~3 min
+          </div>
+        </div>
+      </div>
+
+      <!-- Event log -->
+      <div class="card">
+        <div class="card-title">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          Event Log
+        </div>
+        <div class="event-log" id="event-log" role="log" aria-live="polite" aria-label="Nagios event log">
+          <span class="log-ts">00:00:00</span> <span class="log-ok">System ready. InfraSync VM at 192.168.59.138. All containers UP.</span>
+        </div>
+        <div style="margin-top:10px;display:flex;gap:8px;">
+          <button class="btn-secondary" onclick="clearLog()" style="font-size:.75rem;padding:6px 14px;">Clear Log</button>
+        </div>
+      </div>
+
+      <!-- Quick Actions -->
+      <div class="card">
+        <div class="card-title">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+          Quick Actions
+        </div>
+        <div class="qa-grid">
+          <button class="qa-tile" onclick="copyCmd('terraform apply -auto-approve','terraform-apply')" aria-label="Copy terraform apply command">
+            <div class="qa-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg></div>
+            <div class="qa-label">terraform apply</div>
+            <div class="qa-sub">terraform apply -auto-approve</div>
+          </button>
+          <button class="qa-tile" onclick="copyCmd('for i in $(seq 1 6); do curl -s http://192.168.59.138:8080 | grep -o \"web[123]\"; done','curl-loop')" aria-label="Copy curl loop command">
+            <div class="qa-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3"/></svg></div>
+            <div class="qa-label">Run curl loop</div>
+            <div class="qa-sub">6 × round-robin check</div>
+          </button>
+          <a class="qa-tile" href="http://192.168.59.138/nagios4/" target="_blank" aria-label="Open Nagios monitoring">
+            <div class="qa-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+            <div class="qa-label">Open Nagios</div>
+            <div class="qa-sub">192.168.59.138/nagios4</div>
+          </a>
+          <a class="qa-tile" href="http://192.168.59.138:8404/stats" target="_blank" aria-label="Open HAProxy stats">
+            <div class="qa-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 20V10M12 20V4M6 20v-6"/></svg></div>
+            <div class="qa-label">HAProxy Stats</div>
+            <div class="qa-sub">192.168.59.138:8404/stats</div>
+          </a>
+        </div>
+      </div>
+    </div><!-- /dashboard -->
+
+    <!-- ══ ARCHITECTURE SECTION ══ -->
+    <div id="section-architecture" style="display:none;">
+      <div class="card">
+        <div class="card-title">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4"/></svg>
+          InfraSync System Architecture
+        </div>
+        <!-- Tier 1 -->
+        <div class="arch-tier">
+          <div class="arch-tier-label">Tier 1 — Provisioning (Terraform)</div>
+          <div class="arch-tier-cards">
+            <div class="arch-node">
+              <div class="arch-icon" style="background:rgba(63,175,130,.12);"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--mint)" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg></div>
+              <div><div class="arch-title">Terraform v1.6+</div><div class="arch-sub">7 resources, lab-net bridge</div></div>
+            </div>
+            <div class="arch-node">
+              <div class="arch-icon" style="background:rgba(59,130,246,.12);"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--web1)" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg></div>
+              <div><div class="arch-title">Ubuntu 24.04 LTS VM</div><div class="arch-sub">192.168.59.138 · VMware</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="arch-connector"></div>
+        <!-- Tier 2 -->
+        <div class="arch-tier">
+          <div class="arch-tier-label">Tier 2 — Configuration (Ansible)</div>
+          <div class="arch-tier-cards">
+            <div class="arch-node">
+              <div class="arch-icon" style="background:rgba(245,158,11,.12);"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--warn)" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+              <div><div class="arch-title">Ansible Playbook</div><div class="arch-sub">7 tasks · idempotent</div></div>
+            </div>
+            <div class="arch-node">
+              <div class="arch-icon" style="background:rgba(239,68,68,.12);"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--crit)" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg></div>
+              <div><div class="arch-title">Nagios Core 4.4.6</div><div class="arch-sub">HTTP checks · event handlers</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="arch-connector"></div>
+        <!-- Tier 3 -->
+        <div class="arch-tier">
+          <div class="arch-tier-label">Tier 3 — Load Balancing (Docker + HAProxy)</div>
+          <div class="arch-tier-cards">
+            <div class="arch-node">
+              <div class="arch-icon" style="background:rgba(63,175,130,.12);"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--mint)" stroke-width="2"><path d="M18 20V10M12 20V4M6 20v-6"/></svg></div>
+              <div><div class="arch-title">HAProxy 2.8 LTS</div><div class="arch-sub">:8080 roundrobin · :8404 stats</div></div>
+            </div>
+            <div class="arch-node" style="--node-rgb:59,130,246;">
+              <div class="arch-icon" style="background:rgba(59,130,246,.12);"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--web1)" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/></svg></div>
+              <div><div class="arch-title">web1 · web2 · web3</div><div class="arch-sub">Nginx :8081 :8082 :8083 · lab-net</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="arch-connector"></div>
+        <!-- Tier 4 -->
+        <div class="arch-tier">
+          <div class="arch-tier-label">Tier 4 — Self-Healing (Bash + Sudo)</div>
+          <div class="arch-tier-cards">
+            <div class="arch-node">
+              <div class="arch-icon" style="background:rgba(182,255,88,.08);"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--lime)" stroke-width="2"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg></div>
+              <div><div class="arch-title">restart_container.sh</div><div class="arch-sub">HARD CRITICAL → docker start webN</div></div>
+            </div>
+            <div class="arch-node">
+              <div class="arch-icon" style="background:rgba(63,175,130,.12);"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--mint)" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg></div>
+              <div><div class="arch-title">Sudoers Scope</div><div class="arch-sub">NOPASSWD docker start web[123] only</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div><!-- /architecture -->
+
+    <!-- ══ LOAD BALANCER SECTION ══ -->
+    <div id="section-lb" style="display:none;">
+      <div class="card">
+        <div class="card-title">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 20V10M12 20V4M6 20v-6"/></svg>
+          HAProxy Round-Robin Load Balancer
+        </div>
+        <div class="node-chips">
+          <div class="node-chip-btn active" data-node="web1"><span class="chip-dot"></span>web1 :8081</div>
+          <div class="node-chip-btn active" data-node="web2"><span class="chip-dot"></span>web2 :8082</div>
+          <div class="node-chip-btn active" data-node="web3"><span class="chip-dot"></span>web3 :8083</div>
+          <div class="node-chip-btn" data-node="haproxy"><span class="chip-dot"></span>HAProxy :8080</div>
+        </div>
+        <div style="font-size:.82rem;color:var(--text-2);line-height:1.8;background:var(--bg-deep);border:1px solid var(--border-strong);border-radius:var(--r-tile);padding:16px;font-family:var(--font-mono);">
+          <span style="color:var(--mint-bright)">frontend</span> http_in<br>
+          &nbsp;&nbsp;bind *:8080<br>
+          &nbsp;&nbsp;default_backend web_servers<br><br>
+          <span style="color:var(--mint-bright)">backend</span> web_servers<br>
+          &nbsp;&nbsp;balance roundrobin<br>
+          &nbsp;&nbsp;option httpchk GET /<br>
+          &nbsp;&nbsp;server web1 web1:80 check inter 2s fall 2 rise 2<br>
+          &nbsp;&nbsp;server web2 web2:80 check inter 2s fall 2 rise 2<br>
+          &nbsp;&nbsp;server web3 web3:80 check inter 2s fall 2 rise 2<br><br>
+          <span style="color:var(--text-3)"># Stats on :8404/stats</span>
+        </div>
+        <div class="links-row" style="margin-top:14px;">
+          <a class="tool-link primary-link" href="http://192.168.59.138:8080" target="_blank">Open :8080 (Load Balanced)</a>
+          <a class="tool-link" href="http://192.168.59.138:8404/stats" target="_blank">HAProxy Stats :8404</a>
+          <a class="tool-link" href="http://192.168.59.138:8081" target="_blank">web1 :8081 (direct)</a>
+          <a class="tool-link" href="http://192.168.59.138:8082" target="_blank">web2 :8082 (direct)</a>
+          <a class="tool-link" href="http://192.168.59.138:8083" target="_blank">web3 :8083 (direct)</a>
+        </div>
+      </div>
+    </div><!-- /lb -->
+
+    <!-- ══ MONITORING SECTION ══ -->
+    <div id="section-monitoring" style="display:none;">
+      <div class="card">
+        <div class="card-title">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          Nagios Core 4 — Monitoring &amp; Auto-Remediation
+        </div>
+        <div class="two-col">
+          <div>
+            <div style="font-size:.82rem;color:var(--text-2);line-height:1.8;margin-bottom:14px;">
+              Nagios checks HTTP every <strong style="color:var(--text)">1 minute</strong>.<br>
+              After <strong style="color:var(--text)">3 failed attempts</strong> (SOFT 1/3, 2/3, 3/3) it marks HARD CRITICAL.<br>
+              HARD triggers <strong style="color:var(--mint)">restart_container.sh</strong>.<br>
+              Script checks killswitch file &amp; allowed name, then runs <strong style="color:var(--mint)">docker start webN</strong>.<br>
+              Recovery within <strong style="color:var(--text)">~3 minutes</strong>.
+            </div>
+            <div class="links-row">
+              <a class="tool-link primary-link" href="http://192.168.59.138/nagios4/" target="_blank">Open Nagios UI</a>
+              <a class="tool-link" href="http://192.168.59.138:9090" target="_blank">Prometheus :9090</a>
+              <a class="tool-link" href="http://192.168.59.138:3000" target="_blank">Grafana :3000</a>
+              <a class="tool-link" href="http://192.168.59.138:5000/metrics" target="_blank">/metrics endpoint</a>
+            </div>
+          </div>
+          <div>
+            <div class="nagios-nodes" id="nagios-segs-mon"></div>
+          </div>
+        </div>
+      </div>
+    </div><!-- /monitoring -->
+
+    <!-- ══ TESTS SECTION ══ -->
+    <div id="section-tests" style="display:none;">
+      <div class="card">
+        <div class="card-title">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 11 3 3L22 4"/></svg>
+          Test Cases TC01–TC08
+        </div>
+        <div class="test-table-wrap">
+          <table class="test-table">
+            <thead>
+              <tr>
+                <th>ID</th><th>Name</th><th>Steps</th><th>Expected</th><th>Result</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td class="test-id">TC01</td><td>Terraform provisioning</td><td>terraform apply; docker ps</td><td>5 containers UP, lab-net active</td><td><span class="pass-chip">✓ PASS</span></td></tr>
+              <tr><td class="test-id">TC02</td><td>Direct container access</td><td>curl :8081 :8082 :8083</td><td>HTTP 200, correct hostname each</td><td><span class="pass-chip">✓ PASS</span></td></tr>
+              <tr><td class="test-id">TC03</td><td>Round-robin rotation</td><td>curl -s :8080 × 6</td><td>web1 web2 web3 web1 web2 web3</td><td><span class="pass-chip">✓ PASS</span></td></tr>
+              <tr><td class="test-id">TC04</td><td>Ansible idempotency</td><td>ansible-playbook × 2 runs</td><td>changed=0 on 2nd run</td><td><span class="pass-chip">✓ PASS</span></td></tr>
+              <tr><td class="test-id">TC05</td><td>Nagios normal monitoring</td><td>Nagios UI; check web1 service</td><td>Status OK, last check &lt;2 min</td><td><span class="pass-chip">✓ PASS</span></td></tr>
+              <tr><td class="test-id">TC06</td><td>Failover, remediation OFF</td><td>docker stop web1; rm killswitch</td><td>HAProxy drops web1; site stays up on 2 nodes; web1 stays down</td><td><span class="pass-chip">✓ PASS</span></td></tr>
+              <tr><td class="test-id">TC07</td><td>Auto-remediation ON</td><td>docker stop web1; create killswitch</td><td>Nagios HARD → restart_container.sh → docker start web1 → OK in ~3 min</td><td><span class="pass-chip">✓ PASS</span></td></tr>
+              <tr><td class="test-id">TC08</td><td>Terraform idempotency</td><td>terraform plan after apply</td><td>0 to add, 0 to change, 0 to destroy</td><td><span class="pass-chip">✓ PASS</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div><!-- /tests -->
+
+    <!-- ══ COMMANDS SECTION ══ -->
+    <div id="section-commands" style="display:none;">
+      <div class="card">
+        <div class="card-title">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
+          Commands Reference
+        </div>
+        <div class="cmd-block">
+          <div class="cmd-label">Provision infrastructure</div>
+          <div class="cmd-code">cd ~/InfraSync/terraform
+terraform init
+terraform apply -auto-approve</div>
+          <button class="cmd-copy" onclick="copyCmd('cd ~/InfraSync/terraform\nterraform init\nterraform apply -auto-approve',this)">Copy</button>
+        </div>
+        <div class="cmd-block">
+          <div class="cmd-label">Run Ansible playbook</div>
+          <div class="cmd-code">cd ~/InfraSync/ansible
+ansible-playbook -i inventory.ini playbook.yml --ask-become-pass</div>
+          <button class="cmd-copy" onclick="copyCmd('cd ~/InfraSync/ansible\nansible-playbook -i inventory.ini playbook.yml --ask-become-pass',this)">Copy</button>
+        </div>
+        <div class="cmd-block">
+          <div class="cmd-label">Verify round-robin (6 requests)</div>
+          <div class="cmd-code">for i in $(seq 1 6); do curl -s http://192.168.59.138:8080 | grep -o "web[123]"; done</div>
+          <button class="cmd-copy" onclick="copyCmd('for i in $(seq 1 6); do curl -s http://192.168.59.138:8080 | grep -o \"web[123]\"; done',this)">Copy</button>
+        </div>
+        <div class="cmd-block">
+          <div class="cmd-label">Simulate failure (TC06 — remediation OFF)</div>
+          <div class="cmd-code">sudo rm -f /etc/nagios4/remediation.enabled
+docker stop web1
+# Wait 3 min — Nagios HARD but no restart</div>
+          <button class="cmd-copy" onclick="copyCmd('sudo rm -f /etc/nagios4/remediation.enabled\ndocker stop web1',this)">Copy</button>
+        </div>
+        <div class="cmd-block">
+          <div class="cmd-label">Enable auto-remediation (TC07)</div>
+          <div class="cmd-code">sudo touch /etc/nagios4/remediation.enabled
+docker stop web1
+# Wait ~3 min — Nagios HARD CRITICAL → restart_container.sh → docker start web1</div>
+          <button class="cmd-copy" onclick="copyCmd('sudo touch /etc/nagios4/remediation.enabled\ndocker stop web1',this)">Copy</button>
+        </div>
+        <div class="cmd-block">
+          <div class="cmd-label">Verify idempotency</div>
+          <div class="cmd-code">terraform plan        # expect: No changes
+ansible-playbook -i inventory.ini playbook.yml   # expect: changed=0</div>
+          <button class="cmd-copy" onclick="copyCmd('terraform plan\nansible-playbook -i inventory.ini playbook.yml',this)">Copy</button>
+        </div>
+        <div class="cmd-block">
+          <div class="cmd-label">Check container status</div>
+          <div class="cmd-code">docker ps --format "table {{.Names}}\t{{.Status}}\t{{.Ports}}"</div>
+          <button class="cmd-copy" onclick='copyCmd("docker ps --format \"table {{.Names}}\\t{{.Status}}\\t{{.Ports}}\"",this)'>Copy</button>
+        </div>
+      </div>
+    </div><!-- /commands -->
+
+    <!-- ══ VIVA SECTION ══ -->
+    <div id="section-viva" style="display:none;">
+      <div class="card">
+        <div class="card-title">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          Viva Q&amp;A Bank
+        </div>
+        <div id="viva-list"></div>
+      </div>
+    </div><!-- /viva -->
+
+  </main>
+</div><!-- /body-wrap -->
+
+<!-- Bottom nav (mobile) -->
+<nav class="bottom-nav" role="navigation" aria-label="Mobile navigation">
+  <button class="bottom-nav-btn active" onclick="switchSection('dashboard',null)">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+    Dash
+  </button>
+  <button class="bottom-nav-btn" onclick="switchSection('lb',null)">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 20V10M12 20V4M6 20v-6"/></svg>
+    LB
+  </button>
+  <button class="bottom-nav-btn" onclick="switchSection('tests',null)">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="m9 11 3 3L22 4"/></svg>
+    Tests
+  </button>
+  <button class="bottom-nav-btn" onclick="switchSection('commands',null)">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="4 17 10 11 4 5"/></svg>
+    CLI
+  </button>
+  <button class="bottom-nav-btn" onclick="switchSection('viva',null)">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/></svg>
+    Viva
+  </button>
+</nav>
+</div><!-- /shell -->
+
+<script>
+/* ═══════════════════════════════════════════════
+   STATE
+═══════════════════════════════════════════════ */
+var VM = "192.168.59.138";
+var killswitchOn = true;
+var nodes = {
+  web1: { state: "running", checks: 0, color: "#3B82F6", port: 8081 },
+  web2: { state: "running", checks: 0, color: "#10B981", port: 8082 },
+  web3: { state: "running", checks: 0, color: "#F59E0B", port: 8083 }
+};
+var rrQueue = ["web1","web2","web3"];
+var rrIndex = 0;
+var requestHistory = [];
+var healthHistory = [];
+var VIVA = [
+  { q: "Why wait for HARD CRITICAL before restarting?",
+    a: "To avoid flapping. A temporary network spike would trigger SOFT CRITICAL. Nagios verifies 3 consecutive failures (3 minutes) before marking HARD and running restart_container.sh. This prevents unnecessary restarts." },
+  { q: "Why use both Terraform and Ansible?",
+    a: "Terraform is best for provisioning infrastructure (containers, networks, volumes) declaratively. Ansible is best for OS-level configuration (installing Nagios, templates, sudoers rules) in an idempotent, repeatable way. They are complementary tools." },
+  { q: "How do you prevent nagios from abusing sudo?",
+    a: "We use a scoped /etc/sudoers.d/ rule allowing NOPASSWD only for `/usr/bin/docker start web1`, `web2`, and `web3` — nothing else. The script also checks a killswitch file and validates the container name against an allowlist." },
+  { q: "What happens if web1 crashes during user traffic?",
+    a: "HAProxy fails 2 health checks (inter 2s, fall 2 = 4 seconds) and removes web1 from rotation. Users are served by web2 and web3 with zero downtime while Nagios works on remediation." },
+  { q: "What is the difference between TC06 and TC07?",
+    a: "TC06 tests failover with remediation OFF: HAProxy handles traffic on 2 nodes, web1 stays down. TC07 tests auto-remediation ON: Nagios reaches HARD CRITICAL after 3 mins and restart_container.sh brings web1 back." },
+  { q: "What does the killswitch file do?",
+    a: "The file /etc/nagios4/remediation.enabled acts as a safety switch. restart_container.sh checks for its existence before running docker start. If deleted, Nagios still alerts but no containers are restarted automatically." },
+  { q: "What is idempotency and why does it matter?",
+    a: "Idempotency means running the same operation multiple times produces the same result. terraform plan shows 0 changes after apply, and ansible-playbook shows changed=0 on a second run. This ensures safe, predictable re-runs." },
+  { q: "What is lab-net?",
+    a: "lab-net is an isolated Docker bridge network created by Terraform. All containers (web1, web2, web3, HAProxy) communicate over it using container names as DNS, keeping them isolated from the host network." }
+];
+
+/* ═══════════════════════════════════════════════
+   NAV
+═══════════════════════════════════════════════ */
+var currentSection = "dashboard";
+function switchSection(name, btn) {
+  document.querySelectorAll('[id^="section-"]').forEach(function(el){
+    el.style.display = "none";
+  });
+  var sec = document.getElementById("section-" + name);
+  if (sec) sec.style.display = "";
+  document.querySelectorAll('.nav-pill').forEach(function(p){ p.classList.remove("active"); });
+  document.querySelectorAll('.rail-icon').forEach(function(r){ r.classList.remove("active"); });
+  document.querySelectorAll('.bottom-nav-btn').forEach(function(b){ b.classList.remove("active"); });
+  if (btn) btn.classList.add("active");
+  currentSection = name;
+  if (name === "monitoring") renderNagiosSegs("nagios-segs-mon");
+}
+
+/* ═══════════════════════════════════════════════
+   THEME
+═══════════════════════════════════════════════ */
+function toggleTheme() {
+  var html = document.documentElement;
+  var t = html.getAttribute("data-theme") === "dark" ? "light" : "dark";
+  html.setAttribute("data-theme", t);
+  try { localStorage.setItem("infrasync-theme", t); } catch(e){}
+}
+(function(){
+  try {
+    var t = localStorage.getItem("infrasync-theme");
+    if (t) document.documentElement.setAttribute("data-theme", t);
+  } catch(e) {}
+})();
+
+/* ═══════════════════════════════════════════════
+   LOG
+═══════════════════════════════════════════════ */
+function ts() {
+  var d = new Date();
+  return String(d.getHours()).padStart(2,'0') + ':' +
+         String(d.getMinutes()).padStart(2,'0') + ':' +
+         String(d.getSeconds()).padStart(2,'0');
+}
+function log(msg, cls) {
+  cls = cls || "log-info";
+  var el = document.getElementById("event-log");
+  if (!el) return;
+  var div = document.createElement("div");
+  div.innerHTML = '<span class="log-ts">' + ts() + '</span> <span class="' + cls + '">' + msg + '</span>';
+  el.appendChild(div);
+  el.scrollTop = el.scrollHeight;
+}
+function clearLog() {
+  var el = document.getElementById("event-log");
+  if (el) el.innerHTML = '';
+}
+
+/* ═══════════════════════════════════════════════
+   NODE CARDS
+═══════════════════════════════════════════════ */
+function renderNodeCards() {
+  var el = document.getElementById("node-cards");
+  if (!el) return;
+  el.innerHTML = Object.keys(nodes).map(function(name) {
+    var n = nodes[name];
+    var isUp = n.state === "running";
+    return '<div class="node-card ' + n.state + '" id="nc-' + name + '">' +
+      '<div class="node-header">' +
+        '<div class="node-name" style="color:' + n.color + '">' + name + '</div>' +
+        '<div class="status-chip ' + n.state + '" id="ns-' + name + '">' +
+          '<div class="dot"></div>' + (isUp ? 'running' : 'stopped') +
+        '</div>' +
+      '</div>' +
+      '<div class="node-meta" id="nm-' + name + '">' +
+        '<strong>Image:</strong> nginx:alpine<br>' +
+        '<strong>Port:</strong> ' + n.port + ':80<br>' +
+        '<strong>Network:</strong> lab-net<br>' +
+        '<strong>Checks:</strong> ' + n.checks + ' fail' + (n.checks !== 1 ? 's' : '') +
+      '</div>' +
+      '<div class="node-actions">' +
+        '<button class="btn-node-stop" onclick="stopNode(\'' + name + '\')"' + (!isUp ? ' disabled' : '') + '>Stop</button>' +
+        '<button class="btn-node-start" onclick="startNode(\'' + name + '\')"' + (isUp ? ' disabled' : '') + '>Start</button>' +
+        '<a class="btn-node-open" href="http://' + VM + ':' + n.port + '" target="_blank">Open &rarr;</a>' +
+      '</div>' +
+    '</div>';
+  }).join('');
+}
+
+function updateNodeCard(name) {
+  var n = nodes[name];
+  var isUp = n.state === "running";
+  var card = document.getElementById("nc-" + name);
+  if (!card) return;
+  card.className = "node-card " + n.state;
+  var chip = document.getElementById("ns-" + name);
+  if (chip) {
+    chip.className = "status-chip " + n.state;
+    chip.innerHTML = '<div class="dot"></div>' + (isUp ? 'running' : 'stopped');
+  }
+  var meta = document.getElementById("nm-" + name);
+  if (meta) {
+    meta.innerHTML = '<strong>Image:</strong> nginx:alpine<br>' +
+      '<strong>Port:</strong> ' + n.port + ':80<br>' +
+      '<strong>Network:</strong> lab-net<br>' +
+      '<strong>Checks:</strong> ' + n.checks + ' fail' + (n.checks !== 1 ? 's' : '');
+  }
+  var btns = card.querySelectorAll('.btn-node-stop, .btn-node-start');
+  if (btns[0]) btns[0].disabled = !isUp;
+  if (btns[1]) btns[1].disabled = isUp;
+}
+
+function updateHeroCount() {
+  var up = Object.keys(nodes).filter(function(n){ return nodes[n].state === "running"; }).length;
+  var el = document.getElementById("hero-ok-count");
+  if (el) el.textContent = (up + 1) + "/4"; // +1 for HAProxy
+}
+
+/* ═══════════════════════════════════════════════
+   STOP / START NODES
+═══════════════════════════════════════════════ */
+function stopNode(name) {
+  if (nodes[name].state !== "running") return;
+  nodes[name].state = "stopped";
+  nodes[name].checks = 0;
+  updateNodeCard(name);
+  updateHeroCount();
+  renderNagiosSegs("nagios-segs");
+  log(name + " stopped manually — HAProxy will drop from rotation in ~4s", "log-warn");
+  healthHistory.push({ t: Date.now(), ok: false });
+  drawHealthChart();
+  startNagiosCheck(name);
+}
+
+function startNode(name) {
+  if (nodes[name].state === "running") return;
+  nodes[name].state = "running";
+  nodes[name].checks = 0;
+  updateNodeCard(name);
+  updateHeroCount();
+  renderNagiosSegs("nagios-segs");
+  log(name + " started — HAProxy will add back after 2 OK checks (rise 2)", "log-ok");
+  healthHistory.push({ t: Date.now(), ok: true });
+  drawHealthChart();
+}
+
+/* ═══════════════════════════════════════════════
+   NAGIOS STATE MACHINE
+═══════════════════════════════════════════════ */
+var nagiosTimers = {};
+function startNagiosCheck(name) {
+  clearTimeout(nagiosTimers[name]);
+  var speed = parseInt(document.getElementById("speed-sel").value, 10) || 1000;
+  var checkNum = nodes[name].checks;
+  if (nodes[name].state === "running") {
+    nodes[name].checks = 0;
+    renderNagiosSegs("nagios-segs");
+    return;
+  }
+  checkNum++;
+  nodes[name].checks = checkNum;
+  renderNagiosSegs("nagios-segs");
+  if (checkNum <= 3) {
+    log("[nagios] " + name + " SOFT CRITICAL " + checkNum + "/3 — check_attempt=" + checkNum, "log-warn");
+    nagiosTimers[name] = setTimeout(function(){ startNagiosCheck(name); }, speed);
+  } else {
+    log("[nagios] " + name + " HARD CRITICAL — triggering event handler", "log-crit");
+    if (killswitchOn) {
+      setTimeout(function() {
+        log("[nagios-remediation] restart_container.sh CRITICAL HARD " + name, "log-nagios");
+        setTimeout(function() {
+          log("[nagios-remediation] docker start " + name, "log-nagios");
+          setTimeout(function() {
+            nodes[name].state = "running";
+            nodes[name].checks = 0;
+            updateNodeCard(name);
+            updateHeroCount();
+            renderNagiosSegs("nagios-segs");
+            healthHistory.push({ t: Date.now(), ok: true });
+            drawHealthChart();
+            log("[nagios] " + name + " recovered — state: OK", "log-ok");
+          }, speed * 0.5);
+        }, speed * 0.5);
+      }, speed * 0.5);
+    } else {
+      log("[nagios] killswitch OFF — " + name + " stays CRITICAL (TC06)", "log-crit");
+    }
+  }
+}
+
+/* ═══════════════════════════════════════════════
+   NAGIOS SEGMENTS RENDER
+═══════════════════════════════════════════════ */
+function renderNagiosSegs(containerId) {
+  var el = document.getElementById(containerId);
+  if (!el) return;
+  el.innerHTML = Object.keys(nodes).map(function(name) {
+    var n = nodes[name];
+    var isUp = n.state === "running";
+    var c = n.checks;
+    var stateLabel = isUp ? '<span class="nagios-state ok">OK</span>' :
+      (c <= 3 ? '<span class="nagios-state soft">SOFT ' + c + '/3</span>' :
+                '<span class="nagios-state hard">HARD CRIT</span>');
+    var segs = [0,1,2].map(function(i) {
+      var cls = "seg";
+      if (!isUp) {
+        if (c > 3 || i < c) {
+          cls = "seg " + (c > 3 ? "hard" : ("soft-" + (i+1)));
+        }
+      }
+      return '<div class="' + cls + '" role="presentation"></div>';
+    }).join('');
+    return '<div class="nagios-row">' +
+      '<div class="nagios-name" style="color:' + n.color + '">' + name + '</div>' +
+      '<div class="nagios-segs">' + segs + '</div>' +
+      stateLabel +
+    '</div>';
+  }).join('');
+}
+
+/* ═══════════════════════════════════════════════
+   KILLSWITCH
+═══════════════════════════════════════════════ */
+function toggleKillswitch() {
+  killswitchOn = !killswitchOn;
+  var t = document.getElementById("ks-track");
+  var l = document.getElementById("ks-toggle-label");
+  var lb = document.getElementById("ks-label");
+  if (t) { if (killswitchOn) t.classList.add("on"); else t.classList.remove("on"); }
+  if (l) l.textContent = killswitchOn ? "ON" : "OFF";
+  if (lb) lb.textContent = "Remediation: " + (killswitchOn ? "ON" : "OFF");
+  if (t) t.setAttribute("aria-checked", killswitchOn ? "true" : "false");
+  log("Killswitch " + (killswitchOn ? "ENABLED — HARD CRITICAL will trigger restart (TC07)" : "DISABLED — HARD CRITICAL no restart (TC06)"), killswitchOn ? "log-ok" : "log-warn");
+}
+
+function triggerRemediation() {
+  var stopped = Object.keys(nodes).filter(function(n){ return nodes[n].state !== "running"; });
+  if (stopped.length === 0) {
+    log("All nodes running — no remediation needed", "log-info");
+    return;
+  }
+  stopped.forEach(function(name) {
+    log("[manual] Force remediation check for " + name, "log-nagios");
+    if (killswitchOn) {
+      log("[nagios-remediation] restart_container.sh CRITICAL HARD " + name, "log-nagios");
+      setTimeout(function(){
+        log("[nagios-remediation] docker start " + name, "log-nagios");
+        nodes[name].state = "running";
+        nodes[name].checks = 0;
+        updateNodeCard(name);
+        updateHeroCount();
+        renderNagiosSegs("nagios-segs");
+        healthHistory.push({ t: Date.now(), ok: true });
+        drawHealthChart();
+        log("[nagios] " + name + " recovered — state: OK", "log-ok");
+      }, 1000);
+    } else {
+      log("Killswitch OFF — cannot restart " + name, "log-crit");
+    }
+  });
+}
+
+/* ═══════════════════════════════════════════════
+   ROUND-ROBIN + CHART
+═══════════════════════════════════════════════ */
+function getUpNodes() {
+  return ["web1","web2","web3"].filter(function(n){ return nodes[n].state === "running"; });
+}
+
+function sendRequest(count) {
+  for (var i = 0; i < count; i++) {
+    var up = getUpNodes();
+    if (up.length === 0) { log("All nodes DOWN — request failed!", "log-crit"); return; }
+    var node = up[rrIndex % up.length];
+    rrIndex++;
+    requestHistory.push(node);
+    if (requestHistory.length > 24) requestHistory.shift();
+    log("Request #" + requestHistory.length + " → served by " + node, "log-info");
+  }
+  drawRRChart();
+}
+
+function drawRRChart() {
+  var svg = document.getElementById("rr-chart");
+  if (!svg || requestHistory.length === 0) return;
+  var w = 400, h = 140;
+  var n = requestHistory.length;
+  var bw = Math.max(8, Math.min(28, Math.floor((w - (n+1)*4) / n)));
+  var gap = Math.floor((w - n * bw) / (n + 1));
+  var colorMap = { web1: "#3B82F6", web2: "#10B981", web3: "#F59E0B" };
+  var limeCol = "#B6FF58";
+  var bars = "";
+  var labels = "";
+  for (var i = 0; i < n; i++) {
+    var node = requestHistory[i];
+    var x = gap + i * (bw + gap);
+    var bh = Math.max(20, 60 + Math.random() * 40 | 0);
+    var y = h - 20 - bh;
+    var col = i === n - 1 ? limeCol : colorMap[node];
+    var id = "bar-" + i;
+    bars += '<rect class="bar-hover-target" x="' + x + '" y="' + y + '" width="' + bw + '" height="' + bh + '" rx="4" ry="4"' +
+      ' fill="' + col + '" opacity="' + (i === n-1 ? '1' : '0.65') + '"' +
+      ' data-node="' + node + '" data-req="' + (i+1) + '"' +
+      ' onmouseenter="showTooltip(event,\'' + node + '\',' + (i+1) + ')"' +
+      ' onmouseleave="hideTooltip()"' +
+      '/>';
+    labels += '<text x="' + (x + bw/2) + '" y="' + (h - 4) + '" text-anchor="middle"' +
+      ' font-size="8" fill="var(--text-3)" font-family="var(--font-mono)">' + node.replace('web','') + '</text>';
+  }
+  svg.innerHTML = '<g id="rr-bars">' + bars + '</g><g id="rr-labels">' + labels + '</g>';
+}
+
+function showTooltip(e, node, req) {
+  var tip = document.getElementById("rr-tooltip");
+  if (!tip) return;
+  tip.textContent = "Req #" + req + " → " + node;
+  tip.style.opacity = "1";
+  var rect = e.target.closest('svg').getBoundingClientRect();
+  var bar = e.target.getBoundingClientRect();
+  tip.style.left = (bar.left - rect.left + bar.width/2) + "px";
+  tip.style.top = (bar.top - rect.top) + "px";
+}
+function hideTooltip() {
+  var tip = document.getElementById("rr-tooltip");
+  if (tip) tip.style.opacity = "0";
+}
+
+/* ═══════════════════════════════════════════════
+   HEALTH TIMELINE CHART (SVG)
+═══════════════════════════════════════════════ */
+function drawHealthChart() {
+  var svg = document.getElementById("health-chart");
+  if (!svg) return;
+  var w = 400, h = 140;
+  if (healthHistory.length === 0) {
+    // Initial flat OK line
+    for (var i = 0; i < 12; i++) {
+      healthHistory.push({ t: Date.now() - (12-i)*10000, ok: true });
+    }
+  }
+  var pts = healthHistory.slice(-20);
+  var n = pts.length;
+  var xStep = w / Math.max(n - 1, 1);
+  var okY = 30, critY = 100;
+  var coords = pts.map(function(p, i) {
+    return { x: i * xStep, y: p.ok ? okY : critY };
+  });
+  var linePath = coords.map(function(c, i) {
+    return (i === 0 ? "M" : "L") + c.x + "," + c.y;
+  }).join(" ");
+  var areaPath = linePath + " L" + coords[coords.length-1].x + "," + h +
+    " L0," + h + " Z";
+  var last = coords[coords.length-1];
+  svg.innerHTML =
+    '<defs>' +
+      '<linearGradient id="hg" x1="0" y1="0" x2="0" y2="1">' +
+        '<stop offset="0%" stop-color="#3FAF82" stop-opacity="0.3"/>' +
+        '<stop offset="100%" stop-color="#3FAF82" stop-opacity="0.0"/>' +
+      '</linearGradient>' +
+    '</defs>' +
+    '<path d="' + areaPath + '" fill="url(#hg)"/>' +
+    '<path d="' + linePath + '" fill="none" stroke="var(--mint)" stroke-width="2"/>' +
+    '<text x="6" y="' + (okY + 4) + '" font-size="9" fill="var(--ok)" font-family="var(--font-mono)">OK</text>' +
+    '<text x="6" y="' + (critY + 4) + '" font-size="9" fill="var(--crit)" font-family="var(--font-mono)">CRIT</text>' +
+    '<circle class="live-dot" cx="' + last.x + '" cy="' + last.y + '" r="5" fill="var(--mint-bright)"/>';
+}
+
+/* ═══════════════════════════════════════════════
+   COPY CMD
+═══════════════════════════════════════════════ */
+function copyCmd(text, btn) {
+  if (typeof btn === "string") {
+    // from qa-tile — no button ref needed
+    var dummy = document.createElement("textarea");
+    dummy.value = text;
+    document.body.appendChild(dummy);
+    dummy.select();
+    try { document.execCommand("copy"); } catch(e) {}
+    document.body.removeChild(dummy);
+    log("Copied: " + text.substring(0,40) + "…", "log-ok");
+    return;
+  }
+  var el = document.createElement("textarea");
+  el.value = text;
+  document.body.appendChild(el);
+  el.select();
+  try { document.execCommand("copy"); } catch(e) {}
+  document.body.removeChild(el);
+  if (btn && btn.classList) {
+    var orig = btn.textContent;
+    btn.textContent = "Copied!";
+    btn.classList.add("copied");
+    setTimeout(function(){ btn.textContent = orig; btn.classList.remove("copied"); }, 1500);
+  }
+}
+
+/* ═══════════════════════════════════════════════
+   VIVA ACCORDION
+═══════════════════════════════════════════════ */
+function renderViva() {
+  var el = document.getElementById("viva-list");
+  if (!el) return;
+  el.innerHTML = VIVA.map(function(item, i) {
+    return '<div class="viva-item" id="viva-' + i + '">' +
+      '<div class="viva-q" onclick="toggleViva(' + i + ')" tabindex="0" ' +
+        'onkeydown="if(event.key===\'Enter\'||event.key===\' \')toggleViva(' + i + ')"' +
+        'role="button" aria-expanded="false" aria-controls="viva-a-' + i + '">' +
+        '<span>' + item.q + '</span>' +
+        '<svg class="viva-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>' +
+      '</div>' +
+      '<div class="viva-a" id="viva-a-' + i + '" role="region">' +
+        '<div class="viva-a-inner">' + item.a + '</div>' +
+      '</div>' +
+    '</div>';
+  }).join('');
+}
+
+function toggleViva(i) {
+  var item = document.getElementById("viva-" + i);
+  if (!item) return;
+  var isOpen = item.classList.toggle("open");
+  var btn = item.querySelector(".viva-q");
+  if (btn) btn.setAttribute("aria-expanded", isOpen ? "true" : "false");
+}
+
+/* ═══════════════════════════════════════════════
+   BOOT
+═══════════════════════════════════════════════ */
+(function boot() {
+  renderNodeCards();
+  renderNagiosSegs("nagios-segs");
+  renderViva();
+  for (var i = 0; i < 12; i++) {
+    healthHistory.push({ t: Date.now() - (12-i)*8000, ok: true });
+  }
+  drawHealthChart();
+  // Initial requests to populate chart
+  sendRequest(3);
+})();
+</script>
+</body>
+</html>

@@ -1,18 +1,24 @@
 """
-InfraSync Control Plane API
-Provides REST endpoints for:
-  - Chaos Engineering (crash / revive containers)
-  - Shared Redis hit counters & leaderboard
-  - Prometheus-style metrics export
-  - HAProxy stats proxy (CORS)
+InfraSync Control Plane API + Dashboard
+Provides:
+  - GET  /           → InfraSync Control Dashboard (index.html)
+  - REST endpoints for Chaos Engineering, Redis stats, Prometheus metrics
 """
 
 import os, time, json, docker, redis
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, send_from_directory
 from flask_cors import CORS
 
-app = Flask(__name__)
+DASHBOARD_DIR = os.path.join(os.path.dirname(__file__), "static")
+app = Flask(__name__, static_folder=DASHBOARD_DIR)
 CORS(app)  # Allow all origins — required so web containers can call this API
+
+# ════════════════════════════════════════════════════════════════════════════
+#  DASHBOARD — serve index.html at /
+# ════════════════════════════════════════════════════════════════════════════
+@app.route("/")
+def dashboard():
+    return send_from_directory(DASHBOARD_DIR, "index.html")
 
 # ── Clients ─────────────────────────────────────────────────────────────────
 docker_client = docker.from_env()

@@ -1,0 +1,74 @@
+name: InfraSync CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  # =========================================================================
+  # JOB 1: CI — Lint, Validate Terraform & Ansible, Build Control Plane
+  # =========================================================================
+  ci-validate:
+    name: Validate IaC & Config
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: "1.6.0"
+
+      - name: Terraform Format Check
+        run: terraform -chdir=terraform fmt -check -recursive
+
+      - name: Terraform Init & Validate
+        run: |
+          cd terraform
+          terraform init -backend=false
+          terraform validate
+
+      - name: Lint Ansible Playbook
+        run: |
+          pip install ansible ansible-lint
+          ansible-lint ansible/playbook.yml
+
+      - name: Validate Python Control Plane Syntax
+        run: |
+          python -m py_compile controlplane/app.py
+
+      - name: Build Control Plane Docker Image (Dry Run)
+        run: |
+          docker build -t infrasync-controlplane:ci ./controlplane
+
+  # =========================================================================
+  # JOB 2: CD — Automated Deployment to Ubuntu VM over SSH
+  # =========================================================================
+  cd-deploy:
+    name: Deploy to Ubuntu VM
+    needs: ci-validate
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.VM_HOST }}
+          username: ${{ secrets.VM_USER }}
+          key: ${{ secrets.VM_SSH_KEY }}
+          script: |
+            set -e
+            cd ~/InfraSync
+            git pull origin main
+            cd terraform
+            terraform init
+            terraform apply -auto-approve
+            cd ../ansible
+            ansible-playbook -i inventory.ini playbook.yml
+            for i in {1..3}; do
+              curl -fsS http://localhost:8080 >/dev/null
+            done
+            echo "Deployment verified healthy!"

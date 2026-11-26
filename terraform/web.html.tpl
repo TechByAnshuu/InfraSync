@@ -1,9 +1,9 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>InfraSync Â· ${name}</title>
+  <title>InfraSync · ${name}</title>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
   <style>
     :root {
@@ -35,7 +35,7 @@
         radial-gradient(ellipse 60% 40% at 80% 90%, rgba(var(--primary-rgb), 0.06) 0%, transparent 50%);
     }
 
-    /* â”€â”€ Top bar â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+    /* ── Top bar ──────────────────────────────────────────────────────── */
     .topbar {
       position: sticky;
       top: 0;
@@ -84,7 +84,7 @@
     }
     @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
 
-    /* â”€â”€ Layout â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+    /* ── Layout ──────────────────────────────────────────────────────── */
     .wrapper {
       max-width: 1340px;
       margin: 0 auto;
@@ -95,7 +95,7 @@
     }
     .full-width { grid-column: 1 / -1; }
 
-    /* â”€â”€ Cards â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+    /* ── Cards ──────────────────────────────────────────────────────── */
     .card {
       background: var(--surface);
       border: 1px solid var(--border);
@@ -122,7 +122,7 @@
     }
     .card-title svg { color: var(--primary); }
 
-    /* â”€â”€ Hero â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+    /* ── Hero ─────────────────────────────────────────────────────────── */
     .hero {
       grid-column: 1 / -1;
       background: linear-gradient(135deg,
@@ -186,7 +186,7 @@
       font-family: var(--font-mono);
     }
 
-    /* â”€â”€ Metrics grid â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+    /* ── Metrics grid ─────────────────────────────────────────────────── */
     .metrics-row {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
@@ -220,7 +220,7 @@
       margin-top: 4px;
     }
 
-    /* â”€â”€ Cluster status panel â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+    /* ── Cluster status panel ─────────────────────────────────────────── */
     .cluster-nodes {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -281,7 +281,7 @@
       letter-spacing: .05em;
     }
 
-    /* â”€â”€ Chaos Engineering Panel â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+    /* ── Chaos Engineering Panel ──────────────────────────────────────── */
     .chaos-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -360,7 +360,7 @@
     .chaos-event-log .ev-crash { color: #f87171; }
     .chaos-event-log .ev-revive { color: #34d399; }
 
-    /* â”€â”€ Leaderboard â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+    /* ── Leaderboard ──────────────────────────────────────────────────── */
     .leaderboard-row {
       display: flex;
       align-items: center;
@@ -409,10 +409,10 @@
       text-align: right;
     }
 
-    /* â”€â”€ Chart panel â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+    /* ── Chart panel ──────────────────────────────────────────────────── */
     .chart-wrap { position: relative; height: 180px; }
 
-    /* â”€â”€ CI/CD Pipeline Status â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+    /* ── CI/CD Pipeline Status ────────────────────────────────────────── */
     .pipeline-stages {
       display: flex;
       align-items: center;
@@ -495,7 +495,7 @@
       color: #34d399;
     }
 
-    /* â”€â”€ Action row â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+    /* ── Action row ───────────────────────────────────────────────────── */
     .action-row {
       display: flex;
       gap: 10px;
@@ -534,7 +534,7 @@
     }
     .btn-danger:hover { background: rgba(239,68,68,0.2); }
 
-    /* â”€â”€ Toast â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+    /* ── Toast ────────────────────────────────────────────────────────── */
     #toast {
       position: fixed;
       bottom: 28px;
@@ -558,7 +558,7 @@
     #toast.error   { background:#450a0a; border:1px solid #7f1d1d; color:#fca5a5; }
     #toast.info    { background:#0c1a2e; border:1px solid #1e3a5f; color:#7dd3fc; }
 
-    /* â”€â”€ Tech footer â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+    /* ── Tech footer ──────────────────────────────────────────────────── */
     .tech-footer {
       grid-column: 1 / -1;
       display: flex;
@@ -577,7 +577,7 @@
     }
     .tech-pill span { color: var(--text); font-weight: 600; }
 
-    /* â”€â”€ Scrollbar â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+    /* ── Scrollbar ────────────────────────────────────────────────────── */
     ::-webkit-scrollbar { width: 4px; }
     ::-webkit-scrollbar-track { background: transparent; }
     ::-webkit-scrollbar-thumb { background: var(--border-hover); border-radius: 4px; }
@@ -585,7 +585,7 @@
 </head>
 <body>
 
-<!-- â”€â”€ Topbar â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ -->
+<!-- ── Topbar ───────────────────────────────────────────────────────────── -->
 <header class="topbar">
   <div class="topbar-brand">
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -603,13 +603,13 @@
   </div>
 </header>
 
-<!-- â”€â”€ Main layout â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ -->
+<!-- ── Main layout ──────────────────────────────────────────────────────── -->
 <div class="wrapper">
 
   <!-- Hero -->
   <div class="card hero">
     <div class="hero-left">
-      <div class="hero-serving">â–¶ Serving Backend Node</div>
+      <div class="hero-serving">▶ Serving Backend Node</div>
       <h1 class="hero-title">Web Server:&nbsp;<span>${name}</span></h1>
       <p class="hero-subtitle">
         Provisioned by <strong>Terraform</strong>. Configured by <strong>Ansible</strong>.
@@ -620,12 +620,12 @@
     <div class="hero-right">
       <div class="health-badge">
         <span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:#10b981;box-shadow:0 0 6px #10b981"></span>
-        HEALTHY Â· 200 OK
+        HEALTHY · 200 OK
       </div>
       <div class="hero-meta">
-        Port: <strong>${port}</strong>&nbsp;Â·&nbsp;Network: <strong>lab-net</strong><br>
+        Port: <strong>${port}</strong>&nbsp;·&nbsp;Network: <strong>lab-net</strong><br>
         Session: <strong id="session-id">#SYNC-0000</strong><br>
-        <span id="uptime-display">Uptime: â€”</span>
+        <span id="uptime-display">Uptime: —</span>
       </div>
     </div>
   </div>
@@ -634,23 +634,23 @@
   <div class="metrics-row">
     <div class="metric-tile">
       <div class="metric-label">Total Cluster Hits</div>
-      <div class="metric-value accent" id="m-total">â€”</div>
-      <div class="metric-sub">Across web1 Â· web2 Â· web3</div>
+      <div class="metric-value accent" id="m-total">—</div>
+      <div class="metric-sub">Across web1 · web2 · web3</div>
     </div>
     <div class="metric-tile">
       <div class="metric-label">This Node Hits</div>
-      <div class="metric-value accent" id="m-node">â€”</div>
+      <div class="metric-value accent" id="m-node">—</div>
       <div class="metric-sub">Served by ${name}</div>
     </div>
     <div class="metric-tile">
       <div class="metric-label">Share of Traffic</div>
-      <div class="metric-value accent" id="m-share">â€”%</div>
+      <div class="metric-value accent" id="m-share">—%</div>
       <div class="metric-sub">Round-robin distribution</div>
     </div>
     <div class="metric-tile">
       <div class="metric-label">Control Plane</div>
-      <div class="metric-value" id="m-cp-status" style="font-size:1.1rem">Connectingâ€¦</div>
-      <div class="metric-sub" id="m-cp-uptime">â€”</div>
+      <div class="metric-value" id="m-cp-status" style="font-size:1.1rem">Connecting…</div>
+      <div class="metric-sub" id="m-cp-uptime">—</div>
     </div>
   </div>
 
@@ -672,7 +672,7 @@
           <span class="chip-name">web1</span>
           <span class="chip-port">:8081</span>
         </div>
-        <span class="chip-status-text" style="color:var(--muted)">â€¦</span>
+        <span class="chip-status-text" style="color:var(--muted)">…</span>
       </div>
       <div class="node-chip" id="chip-web2">
         <div class="chip-dot"></div>
@@ -680,7 +680,7 @@
           <span class="chip-name">web2</span>
           <span class="chip-port">:8082</span>
         </div>
-        <span class="chip-status-text" style="color:var(--muted)">â€¦</span>
+        <span class="chip-status-text" style="color:var(--muted)">…</span>
       </div>
       <div class="node-chip" id="chip-web3">
         <div class="chip-dot"></div>
@@ -688,7 +688,7 @@
           <span class="chip-name">web3</span>
           <span class="chip-port">:8083</span>
         </div>
-        <span class="chip-status-text" style="color:var(--muted)">â€¦</span>
+        <span class="chip-status-text" style="color:var(--muted)">…</span>
       </div>
     </div>
   </div>
@@ -708,16 +708,16 @@
     </div>
   </div>
 
-  <!-- â”â” CHAOS ENGINEERING â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â” -->
+  <!-- ━━ CHAOS ENGINEERING ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
   <div class="card full-width">
     <div class="card-header">
       <div class="card-title">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
           <path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/>
         </svg>
-        Chaos Engineering â€” Fault Injection
+        Chaos Engineering — Fault Injection
       </div>
-      <span style="font-size:.7rem;color:var(--warning);font-weight:700">âš  LIVE CONTROL</span>
+      <span style="font-size:.7rem;color:var(--warning);font-weight:700">⚠ LIVE CONTROL</span>
     </div>
 
     <div class="chaos-grid" id="chaos-grid">
@@ -725,17 +725,17 @@
     </div>
 
     <div class="chaos-event-log" id="chaos-log">
-      <span style="color:var(--muted)">Chaos event log â€” waiting for activityâ€¦</span>
+      <span style="color:var(--muted)">Chaos event log — waiting for activity…</span>
     </div>
 
     <div style="margin-top:12px;display:flex;gap:8px;justify-content:flex-end">
       <button class="btn btn-danger" onclick="resetAll()" style="padding:7px 16px;font-size:.75rem">
-        â†º Reset All Counters
+        ↺ Reset All Counters
       </button>
     </div>
   </div>
 
-  <!-- â”â” REDIS LEADERBOARD â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â” -->
+  <!-- ━━ REDIS LEADERBOARD ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
   <div class="card">
     <div class="card-header">
       <div class="card-title">
@@ -746,14 +746,14 @@
       </div>
     </div>
     <div id="leaderboard-rows">
-      <div style="color:var(--muted);font-size:.82rem">Loadingâ€¦</div>
+      <div style="color:var(--muted);font-size:.82rem">Loading…</div>
     </div>
     <div style="margin-top:12px;font-size:.7rem;color:var(--muted)">
       State shared via Redis container on <code style="font-family:var(--font-mono);color:var(--info)">lab-net:6379</code>
     </div>
   </div>
 
-  <!-- â”â” CI/CD PIPELINE STATUS â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â”â” -->
+  <!-- ━━ CI/CD PIPELINE STATUS ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
   <div class="card">
     <div class="card-header">
       <div class="card-title">
@@ -762,62 +762,62 @@
         </svg>
         GitHub Actions CI/CD Pipeline
       </div>
-      <span class="ci-badge passed">âœ“ All Checks Passed</span>
+      <span class="ci-badge passed">✓ All Checks Passed</span>
     </div>
 
     <div class="pipeline-stages" id="pipeline-stages">
       <div class="pipeline-stage">
         <div class="stage-block">
-          <div class="stage-icon success">âœ“</div>
+          <div class="stage-icon success">✓</div>
           <div class="stage-name">Lint TF</div>
         </div>
       </div>
       <div class="pipeline-arrow"></div>
       <div class="pipeline-stage">
         <div class="stage-block">
-          <div class="stage-icon success">âœ“</div>
+          <div class="stage-icon success">✓</div>
           <div class="stage-name">TF Validate</div>
         </div>
       </div>
       <div class="pipeline-arrow"></div>
       <div class="pipeline-stage">
         <div class="stage-block">
-          <div class="stage-icon success">âœ“</div>
+          <div class="stage-icon success">✓</div>
           <div class="stage-name">Ansible Lint</div>
         </div>
       </div>
       <div class="pipeline-arrow"></div>
       <div class="pipeline-stage">
         <div class="stage-block">
-          <div class="stage-icon success">âœ“</div>
+          <div class="stage-icon success">✓</div>
           <div class="stage-name">TF Apply</div>
         </div>
       </div>
       <div class="pipeline-arrow"></div>
       <div class="pipeline-stage">
         <div class="stage-block">
-          <div class="stage-icon success">âœ“</div>
+          <div class="stage-icon success">✓</div>
           <div class="stage-name">Ansible Play</div>
         </div>
       </div>
       <div class="pipeline-arrow"></div>
       <div class="pipeline-stage">
         <div class="stage-block">
-          <div class="stage-icon success">âœ“</div>
+          <div class="stage-icon success">✓</div>
           <div class="stage-name">Health Check</div>
         </div>
       </div>
     </div>
 
     <div class="ci-info-row">
-      <span>Branch: <code style="font-family:var(--font-mono);color:var(--info)">main</code> &nbsp;Â·&nbsp; Commit: <code style="font-family:var(--font-mono);color:var(--info)">a3f9c82</code></span>
-      <span>Triggered by: <strong>git push â†’ GitHub â†’ SSH â†’ VM</strong></span>
-      <span style="color:var(--success)">â–¸ Deploy: 2m 14s</span>
+      <span>Branch: <code style="font-family:var(--font-mono);color:var(--info)">main</code> &nbsp;·&nbsp; Commit: <code style="font-family:var(--font-mono);color:var(--info)">a3f9c82</code></span>
+      <span>Triggered by: <strong>git push → GitHub → SSH → VM</strong></span>
+      <span style="color:var(--success)">▸ Deploy: 2m 14s</span>
     </div>
 
     <!-- Prometheus Metrics strip -->
     <div style="margin-top:14px;padding:10px 14px;background:#060a12;border:1px solid var(--border);border-radius:10px;font-family:var(--font-mono);font-size:.7rem;color:var(--muted)">
-      <div style="color:var(--info);margin-bottom:4px"># PROMETHEUS METRICS â€” /metrics endpoint</div>
+      <div style="color:var(--info);margin-bottom:4px"># PROMETHEUS METRICS — /metrics endpoint</div>
       <div id="prom-lines">infrasync_total_hits 0</div>
     </div>
   </div>
@@ -858,13 +858,13 @@
 
   <!-- Tech footer -->
   <div class="tech-footer">
-    <div class="tech-pill">Â· Provisioning: <span>Terraform v1.6+</span></div>
-    <div class="tech-pill">Â· Config Mgmt: <span>Ansible Core</span></div>
-    <div class="tech-pill">Â· Monitoring: <span>Nagios Core 4</span></div>
-    <div class="tech-pill">Â· Load Balancer: <span>HAProxy 2.8 LTS</span></div>
-    <div class="tech-pill">Â· State Store: <span>Redis 7</span></div>
-    <div class="tech-pill">Â· Control Plane: <span>Flask + Docker SDK</span></div>
-    <div class="tech-pill">Â· OS: <span>Ubuntu 24.04 LTS</span></div>
+    <div class="tech-pill">· Provisioning: <span>Terraform v1.6+</span></div>
+    <div class="tech-pill">· Config Mgmt: <span>Ansible Core</span></div>
+    <div class="tech-pill">· Monitoring: <span>Nagios Core 4</span></div>
+    <div class="tech-pill">· Load Balancer: <span>HAProxy 2.8 LTS</span></div>
+    <div class="tech-pill">· State Store: <span>Redis 7</span></div>
+    <div class="tech-pill">· Control Plane: <span>Flask + Docker SDK</span></div>
+    <div class="tech-pill">· OS: <span>Ubuntu 24.04 LTS</span></div>
   </div>
 
 </div><!-- /wrapper -->
@@ -872,9 +872,9 @@
 <!-- Toast -->
 <div id="toast"></div>
 
-<!-- â”€â”€ Scripts â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ -->
+<!-- ── Scripts ────────────────────────────────────────────────────────────── -->
 <script>
-  /* â”€â”€ Constants â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+  /* ── Constants ─────────────────────────────────────────────────────── */
   const NODE_NAME   = "${name}";
   const NODE_COLOR  = "${color}";
   const CP_PORT     = ${controlplane_port};
@@ -882,7 +882,7 @@
   const CP_BASE     = `http://$${host}:$${CP_PORT}`;
   const NODES       = ["web1", "web2", "web3"];
 
-  /* â”€â”€ Session / boot â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+  /* ── Session / boot ─────────────────────────────────────────────────── */
   document.getElementById("session-id").textContent =
     "#SYNC-" + String(Math.floor(1000 + Math.random() * 9000));
 
@@ -904,7 +904,7 @@
   setInterval(updateClock, 1000);
   updateClock();
 
-  /* â”€â”€ Toast helper â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+  /* ── Toast helper ───────────────────────────────────────────────────── */
   let toastTimer;
   function toast(msg, type = "info") {
     const el = document.getElementById("toast");
@@ -914,7 +914,7 @@
     toastTimer = setTimeout(() => el.classList.remove("show"), 3200);
   }
 
-  /* â”€â”€ Chart.js doughnut â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+  /* ── Chart.js doughnut ──────────────────────────────────────────────── */
   const distCtx = document.getElementById("distChart").getContext("2d");
   const distChart = new Chart(distCtx, {
     type: "doughnut",
@@ -946,7 +946,7 @@
     }
   });
 
-  /* â”€â”€ Fetch stats & update UI â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+  /* ── Fetch stats & update UI ────────────────────────────────────────── */
   async function fetchStats() {
     try {
       const r = await fetch(`$${CP_BASE}/api/stats`, { signal: AbortSignal.timeout(3000) });
@@ -1009,10 +1009,10 @@
         `infrasync_total_hits $${total}<br>` +
         NODES.map(n => `infrasync_node_hits{node="$${n}"} $${nodehits[n]||0}`).join("<br>");
 
-    } catch (_) { /* Control plane not reachable yet â€” silent */ }
+    } catch (_) { /* Control plane not reachable yet — silent */ }
   }
 
-  /* â”€â”€ Fetch control plane health â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+  /* ── Fetch control plane health ─────────────────────────────────────── */
   async function fetchCPHealth() {
     try {
       const r = await fetch(`$${CP_BASE}/health`, { signal: AbortSignal.timeout(2000) });
@@ -1021,18 +1021,18 @@
       const h = Math.floor(up / 3600);
       const m = Math.floor((up % 3600) / 60);
       const s = up % 60;
-      document.getElementById("m-cp-status").textContent   = "â— Online";
+      document.getElementById("m-cp-status").textContent   = "● Online";
       document.getElementById("m-cp-status").style.color   = "#34d399";
       document.getElementById("m-cp-uptime").textContent   =
         `Uptime: $${h}h $${String(m).padStart(2,"0")}m $${String(s).padStart(2,"0")}s`;
     } catch (_) {
-      document.getElementById("m-cp-status").textContent = "âš  Offline";
+      document.getElementById("m-cp-status").textContent = "⚠ Offline";
       document.getElementById("m-cp-status").style.color = "#f87171";
       document.getElementById("m-cp-uptime").textContent = "Control plane unreachable";
     }
   }
 
-  /* â”€â”€ Chaos Engineering â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+  /* ── Chaos Engineering ──────────────────────────────────────────────── */
   function buildChaosGrid(statusData) {
     const grid = document.getElementById("chaos-grid");
     grid.innerHTML = NODES.map(n => {
@@ -1041,18 +1041,18 @@
       return `<div class="chaos-node" id="chaos-$${n}">
         <div class="chaos-node-name">$${n}</div>
         <div class="chaos-node-state $${isUp ? "running" : "stopped"}" id="cs-$${n}">
-          $${isUp ? "â— running" : "â—‹ stopped"}
+          $${isUp ? "● running" : "○ stopped"}
         </div>
         <div class="chaos-btns">
           <button class="btn-chaos-crash" id="cb-crash-$${n}"
             onclick="chaosAction('crash','$${n}')"
             $${!isUp ? "disabled" : ""}>
-            ðŸ’€ Crash
+            💀 Crash
           </button>
           <button class="btn-chaos-revive" id="cb-revive-$${n}"
             onclick="chaosAction('revive','$${n}')"
             $${isUp ? "disabled" : ""}>
-            âœ¦ Revive
+            ✦ Revive
           </button>
         </div>
       </div>`;
@@ -1071,20 +1071,20 @@
         logEl.innerHTML = d.recent_events.map(ev => {
           const t   = new Date(ev.ts * 1000).toLocaleTimeString();
           const cls = ev.action === "crash" ? "ev-crash" : "ev-revive";
-          const ico = ev.action === "crash" ? "ðŸ’€" : "âœ¦";
-          return `<div class="$${cls}">$${t} &nbsp; $${ico} $${ev.action.toUpperCase()} â†’ $${ev.target}</div>`;
+          const ico = ev.action === "crash" ? "💀" : "✦";
+          return `<div class="$${cls}">$${t} &nbsp; $${ico} $${ev.action.toUpperCase()} → $${ev.target}</div>`;
         }).join("");
       }
     } catch (_) {
       document.getElementById("chaos-grid").innerHTML =
         `<div style="color:var(--muted);font-size:.8rem;grid-column:1/-1;padding:12px 0">
-          Control plane offline â€” chaos buttons unavailable</div>`;
+          Control plane offline — chaos buttons unavailable</div>`;
     }
   }
 
   async function chaosAction(action, name) {
     const btn = document.getElementById(`cb-$${action}-$${name}`);
-    if (btn) { btn.disabled = true; btn.textContent = "â€¦"; }
+    if (btn) { btn.disabled = true; btn.textContent = "…"; }
     try {
       const r = await fetch(`$${CP_BASE}/api/chaos/$${action}/$${name}`, {
         method: "POST",
@@ -1092,7 +1092,7 @@
       });
       const d = await r.json();
       if (d.ok) {
-        toast(`$${name} $${action === "crash" ? "stopped ðŸ’€" : "revived âœ¦"}`, action === "crash" ? "error" : "success");
+        toast(`$${name} $${action === "crash" ? "stopped 💀" : "revived ✦"}`, action === "crash" ? "error" : "success");
         await fetchChaosStatus();
         await fetchStats();
       } else {
@@ -1100,32 +1100,32 @@
       }
     } catch (e) {
       toast("Control plane unreachable", "error");
-      if (btn) { btn.disabled = false; btn.textContent = action === "crash" ? "ðŸ’€ Crash" : "âœ¦ Revive"; }
+      if (btn) { btn.disabled = false; btn.textContent = action === "crash" ? "💀 Crash" : "✦ Revive"; }
     }
   }
 
-  /* â”€â”€ Reset all counters â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+  /* ── Reset all counters ─────────────────────────────────────────────── */
   async function resetAll() {
     if (!confirm("Reset all hit counters and chaos events?")) return;
     try {
       await fetch(`$${CP_BASE}/api/reset`, { method: "POST", signal: AbortSignal.timeout(3000) });
-      toast("All counters reset â†º", "info");
+      toast("All counters reset ↺", "info");
       await fetchStats();
     } catch (_) { toast("Control plane unreachable", "error"); }
   }
 
-  /* â”€â”€ Record hit on this node then reload â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+  /* ── Record hit on this node then reload ────────────────────────────── */
   async function recordHitAndReload() {
     try {
       await fetch(`$${CP_BASE}/api/hit/$${NODE_NAME}`, {
         method: "POST",
         signal: AbortSignal.timeout(2000)
       });
-    } catch (_) { /* silent â€” reload anyway */ }
+    } catch (_) { /* silent — reload anyway */ }
     window.location.reload();
   }
 
-  /* â”€â”€ Boot sequence â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+  /* ── Boot sequence ──────────────────────────────────────────────────── */
   async function boot() {
     buildChaosGrid(null);
     await Promise.all([fetchStats(), fetchCPHealth(), fetchChaosStatus()]);
@@ -1146,7 +1146,7 @@
     }, 1000);
   }
 
-  /* â”€â”€ Polling â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+  /* ── Polling ────────────────────────────────────────────────────────── */
   boot();
   setInterval(() => { fetchStats(); fetchChaosStatus(); fetchCPHealth(); }, 5000);
 </script>

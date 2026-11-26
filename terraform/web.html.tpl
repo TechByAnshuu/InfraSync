@@ -137,12 +137,12 @@ button { font-family: var(--font-ui); cursor: pointer; border: none; background:
 
 /* TC03 target — keep this exact line */
 
-.node-title {
+.node-title, .node-card h1 {
   font-family: var(--font-num);
   font-size: 3.4rem; font-weight: 300; letter-spacing: -.03em; line-height: 1;
   margin-bottom: 14px;
 }
-.node-title .node-highlight { color: var(--accent); font-weight: 600; }
+.node-title .node-highlight, .node-card h1 .node-highlight { color: var(--accent); font-weight: 600; }
 .node-desc {
   font-size: .88rem; color: var(--text-2); line-height: 1.6;
   max-width: 520px; margin-bottom: 28px;
@@ -298,7 +298,7 @@ button { font-family: var(--font-ui); cursor: pointer; border: none; background:
     <div class="node-serving">Serving Backend Node</div>
 
     <!-- TC03 grep target — KEEP THIS EXACT FORMAT -->
-    <h1 class="node-title">Web Server: <span class="node-highlight">${name}</span></h1>
+    <h1>Web Server: <span class="node-highlight">${name}</span></h1>
 
     <p class="node-desc">
       Provisioned by <strong>Terraform</strong> &middot; Configured by <strong>Ansible</strong> &middot;
@@ -355,23 +355,23 @@ button { font-family: var(--font-ui); cursor: pointer; border: none; background:
         </svg>
         Send Next Request (Reload)
       </button>
-      <a class="btn-link dashboard" href="http://VMIP:5000" id="cp-link">
+      <a class="btn-link dashboard" href="#" id="cp-link">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
           <rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/>
         </svg>
         Control Dashboard (:5000)
       </a>
-      <a class="btn-link" href="http://VMIP:8080" id="lb-link">
+      <a class="btn-link" href="#" id="lb-link">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <path d="M18 20V10M12 20V4M6 20v-6"/>
         </svg>
         Load Balancer (:8080)
       </a>
-      <a class="btn-link" href="http://VMIP:8404/stats" id="stats-link">HAProxy Stats</a>
-      <a class="btn-link" href="http://VMIP/nagios4/" id="nagios-link">Nagios Monitor</a>
-      <a class="btn-link" href="http://VMIP:9090" id="prom-link">Prometheus</a>
-      <a class="btn-link" href="http://VMIP:3000" id="grafana-link">Grafana</a>
+      <a class="btn-link" href="#" id="stats-link">HAProxy Stats</a>
+      <a class="btn-link" href="#" id="nagios-link">Nagios Monitor</a>
+      <a class="btn-link" href="#" id="prom-link">Prometheus</a>
+      <a class="btn-link" href="#" id="grafana-link">Grafana</a>
     </div>
 
     <!-- Tech footer -->

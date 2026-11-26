@@ -579,48 +579,95 @@ button{font-family:var(--font-ui);cursor:pointer;border:none;background:none;}
 }
 
 /* ═══════════════════════════════════════════════
-   ARCHITECTURE SECTION
+   ARCHITECTURE & PIPELINE VISUALIZATION
 ═══════════════════════════════════════════════ */
-#section-architecture{display:none;}
-.arch-tier{
-  display:flex;flex-direction:column;gap:8px;
+.arch-header{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:18px;}
+.arch-sub-txt{font-size:.78rem;color:var(--text-3);}
+.pipe-flow{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:12px;
+  position:relative;
+  margin-bottom:20px;
 }
-.arch-tier-label{
-  font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;
-  color:var(--text-3);
-  margin-bottom:4px;
-}
-.arch-tier-cards{display:flex;gap:10px;flex-wrap:wrap;}
-.arch-node{
+.pipe-step{
   background:var(--surface-2);
   border:1px solid var(--border);
   border-radius:var(--r-tile);
-  padding:14px 18px;
-  display:flex;align-items:center;gap:10px;
-  flex:1;min-width:140px;
-  transition:border-color .2s;
+  padding:14px 16px;
+  position:relative;
+  cursor:pointer;
+  transition:border-color .2s, transform .2s, background .2s;
 }
-.arch-node:hover{border-color:var(--mint);}
-.arch-icon{
-  width:32px;height:32px;
-  border-radius:8px;
-  display:flex;align-items:center;justify-content:center;
-  flex-shrink:0;
+.pipe-step:hover,.pipe-step.selected{
+  border-color:var(--mint);
+  background:rgba(63,175,130,.07);
+  transform:translateY(-2px);
 }
-.arch-title{font-size:.82rem;font-weight:600;}
-.arch-sub{font-size:.7rem;color:var(--text-3);}
-.arch-connector{
-  width:2px;
-  height:28px;
-  background:linear-gradient(to bottom,var(--mint),transparent);
-  margin:4px auto;
-  opacity:.4;
+.pipe-step.selected{border-color:var(--lime);}
+.pipe-num{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:20px;height:20px;border-radius:50%;
+  background:rgba(63,175,130,.15);color:var(--mint-bright);
+  font-family:var(--font-mono);font-size:.68rem;font-weight:700;
+  margin-bottom:8px;
+}
+.pipe-title{font-size:.84rem;font-weight:700;color:var(--text);margin-bottom:3px;}
+.pipe-desc{font-size:.72rem;color:var(--text-3);line-height:1.45;}
+.pipe-arrow{
+  position:absolute;right:-10px;top:50%;transform:translateY(-50%);
+  width:18px;height:18px;border-radius:50%;
+  background:var(--surface-1);border:1px solid var(--border-strong);
+  color:var(--mint-bright);font-size:.7rem;
+  display:flex;align-items:center;justify-content:center;z-index:2;
+}
+.topo-wrap{
+  background:var(--bg-deep);
+  border:1px solid var(--border-strong);
+  border-radius:var(--r-card);
+  padding:20px;
+  margin-bottom:16px;
+  overflow-x:auto;
+}
+.topo-svg{width:100%;min-width:760px;height:auto;display:block;}
+.topo-node-g{cursor:pointer;transition:opacity .2s;}
+.topo-node-g:hover rect.node-box{stroke:var(--mint-bright);stroke-width:1.8;}
+.topo-node-g.selected rect.node-box{stroke:var(--lime);stroke-width:2.2;}
+@keyframes dashFlow{to{stroke-dashoffset:-24;}}
+.flow-anim{stroke-dasharray:6 6;animation:dashFlow 1.4s linear infinite;}
+.topo-inspector{
+  background:var(--surface-2);
+  border:1px solid var(--border);
+  border-radius:var(--r-tile);
+  padding:18px 20px;
+  display:grid;
+  grid-template-columns:1.2fr 1fr 1.3fr;
+  gap:16px;
+  align-items:start;
+}
+.insp-badge{
+  display:inline-flex;align-items:center;gap:6px;
+  font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;
+  color:var(--mint-bright);background:rgba(63,175,130,.12);
+  border:1px solid rgba(63,175,130,.25);border-radius:var(--r-pill);
+  padding:3px 10px;margin-bottom:8px;
+}
+.insp-title{font-size:1.05rem;font-weight:700;color:var(--text);margin-bottom:4px;}
+.insp-port{font-family:var(--font-mono);font-size:.75rem;color:var(--lime);}
+.insp-label{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--text-3);margin-bottom:6px;}
+.insp-text{font-size:.78rem;color:var(--text-2);line-height:1.55;}
+@media (max-width:900px){
+  .pipe-flow{grid-template-columns:1fr 1fr;}
+  .pipe-arrow{display:none;}
+  .topo-inspector{grid-template-columns:1fr;}
+}
+@media (max-width:560px){
+  .pipe-flow{grid-template-columns:1fr;}
 }
 
 /* ═══════════════════════════════════════════════
    TEST MATRIX
 ═══════════════════════════════════════════════ */
-#section-tests{display:none;}
 .test-table-wrap{overflow-x:auto;}
 .test-table{width:100%;border-collapse:collapse;}
 .test-table th{
@@ -648,7 +695,6 @@ button{font-family:var(--font-ui);cursor:pointer;border:none;background:none;}
 /* ═══════════════════════════════════════════════
    COMMANDS
 ═══════════════════════════════════════════════ */
-#section-commands{display:none;}
 .cmd-block{
   background:var(--bg-deep);
   border:1px solid var(--border-strong);
@@ -677,7 +723,6 @@ button{font-family:var(--font-ui);cursor:pointer;border:none;background:none;}
 /* ═══════════════════════════════════════════════
    VIVA QA ACCORDION
 ═══════════════════════════════════════════════ */
-#section-viva{display:none;}
 .viva-item{
   border:1px solid var(--border);
   border-radius:var(--r-tile);
@@ -797,14 +842,12 @@ button{font-family:var(--font-ui);cursor:pointer;border:none;background:none;}
       <button class="nav-pill" data-section="lb" onclick="switchSection('lb',this)">Load Balancer</button>
       <button class="nav-pill" data-section="monitoring" onclick="switchSection('monitoring',this)">Monitoring</button>
       <button class="nav-pill" data-section="tests" onclick="switchSection('tests',this)">Test Cases</button>
-      <button class="nav-pill" data-section="commands" onclick="switchSection('commands',this)">Commands</button>
-      <button class="nav-pill" data-section="viva" onclick="switchSection('viva',this)">Viva Q&amp;A</button>
     </nav>
   </div>
   <div class="topbar-right">
     <div class="search-bar" role="search">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-      Search commands…
+      Search nodes, tests…
     </div>
     <button class="icon-btn" aria-label="Notifications" id="bell-btn">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
@@ -820,27 +863,21 @@ button{font-family:var(--font-ui);cursor:pointer;border:none;background:none;}
 <div class="body-wrap">
   <!-- Floating left rail -->
   <nav class="rail" role="navigation" aria-label="Section navigation">
-    <button class="rail-icon active" aria-label="Dashboard" onclick="switchSection('dashboard',null)" title="Dashboard">
+    <button class="rail-icon active" data-section="dashboard" aria-label="Dashboard" onclick="switchSection('dashboard',null)" title="Dashboard">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
     </button>
-    <button class="rail-icon" aria-label="Architecture" onclick="switchSection('architecture',null)" title="Architecture">
+    <button class="rail-icon" data-section="architecture" aria-label="Architecture" onclick="switchSection('architecture',null)" title="Architecture">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg>
     </button>
-    <button class="rail-icon" aria-label="Load Balancer" onclick="switchSection('lb',null)" title="Load Balancer">
+    <button class="rail-icon" data-section="lb" aria-label="Load Balancer" onclick="switchSection('lb',null)" title="Load Balancer">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 20V10M12 20V4M6 20v-6"/></svg>
     </button>
-    <button class="rail-icon" aria-label="Monitoring" onclick="switchSection('monitoring',null)" title="Monitoring">
+    <button class="rail-icon" data-section="monitoring" aria-label="Monitoring" onclick="switchSection('monitoring',null)" title="Monitoring">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
     </button>
     <div class="rail-sep" role="separator"></div>
-    <button class="rail-icon" aria-label="Test Cases" onclick="switchSection('tests',null)" title="Test Cases">
+    <button class="rail-icon" data-section="tests" aria-label="Test Cases" onclick="switchSection('tests',null)" title="Test Cases">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="m9 11 3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
-    </button>
-    <button class="rail-icon" aria-label="Commands" onclick="switchSection('commands',null)" title="Commands">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
-    </button>
-    <button class="rail-icon" aria-label="Viva Q&amp;A" onclick="switchSection('viva',null)" title="Viva Q&A">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
     </button>
     <div class="rail-spacer"></div>
     <button class="rail-icon theme-toggle" id="theme-btn" aria-label="Toggle theme" onclick="toggleTheme()">
@@ -1079,67 +1116,194 @@ button{font-family:var(--font-ui);cursor:pointer;border:none;background:none;}
     <!-- ══ ARCHITECTURE SECTION ══ -->
     <div id="section-architecture" style="display:none;">
       <div class="card">
-        <div class="card-title">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4"/></svg>
-          InfraSync System Architecture
+        <div class="arch-header">
+          <div>
+            <div class="card-title" style="margin-bottom:4px;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4"/></svg>
+              InfraSync Pipeline &amp; System Architecture
+            </div>
+            <div class="arch-sub-txt">Click any tool or node in the pipeline or topology below to inspect how it connects and works.</div>
+          </div>
+          <span class="demo-badge" style="color:var(--mint-bright);background:rgba(63,175,130,.12);border-color:rgba(63,175,130,.28);">lab-net &middot; 192.168.59.138</span>
         </div>
-        <!-- Tier 1 -->
-        <div class="arch-tier">
-          <div class="arch-tier-label">Tier 1 — Provisioning (Terraform)</div>
-          <div class="arch-tier-cards">
-            <div class="arch-node">
-              <div class="arch-icon" style="background:rgba(63,175,130,.12);"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--mint)" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg></div>
-              <div><div class="arch-title">Terraform v1.6+</div><div class="arch-sub">7 resources, lab-net bridge</div></div>
-            </div>
-            <div class="arch-node">
-              <div class="arch-icon" style="background:rgba(59,130,246,.12);"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--web1)" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg></div>
-              <div><div class="arch-title">Ubuntu 24.04 LTS VM</div><div class="arch-sub">192.168.59.138 · VMware</div></div>
-            </div>
+
+        <!-- Part 1: Provisioning & Config Pipeline -->
+        <div style="font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--text-3);margin-bottom:10px;">1. Provisioning &amp; Automation Pipeline</div>
+        <div class="pipe-flow">
+          <div class="pipe-step" data-arch="git" onclick="selectArchNode('git')">
+            <div class="pipe-num">01</div>
+            <div class="pipe-title">Git Repository</div>
+            <div class="pipe-desc">Versioned Terraform HCL, Ansible playbooks, HAProxy cfg &amp; controlplane app.</div>
+            <div class="pipe-arrow">&rarr;</div>
+          </div>
+          <div class="pipe-step selected" data-arch="terraform" onclick="selectArchNode('terraform')">
+            <div class="pipe-num">02</div>
+            <div class="pipe-title">Terraform v1.6+</div>
+            <div class="pipe-desc">Creates <code style="color:var(--mint-bright)">lab-net</code> bridge, 3 Nginx nodes, HAProxy, Redis &amp; Control Plane.</div>
+            <div class="pipe-arrow">&rarr;</div>
+          </div>
+          <div class="pipe-step" data-arch="ansible" onclick="selectArchNode('ansible')">
+            <div class="pipe-num">03</div>
+            <div class="pipe-title">Ansible Core (7 Tasks)</div>
+            <div class="pipe-desc">Installs Nagios Core 4.4.6, HTTP checks, killswitch &amp; scoped sudoers rule.</div>
+            <div class="pipe-arrow">&rarr;</div>
+          </div>
+          <div class="pipe-step" data-arch="remediation" onclick="selectArchNode('remediation')">
+            <div class="pipe-num">04</div>
+            <div class="pipe-title">Self-Healing Loop</div>
+            <div class="pipe-desc">Nagios HARD CRITICAL runs <code style="color:var(--lime)">restart_container.sh</code> &rarr; auto-recovery ~3m.</div>
           </div>
         </div>
-        <div class="arch-connector"></div>
-        <!-- Tier 2 -->
-        <div class="arch-tier">
-          <div class="arch-tier-label">Tier 2 — Configuration (Ansible)</div>
-          <div class="arch-tier-cards">
-            <div class="arch-node">
-              <div class="arch-icon" style="background:rgba(245,158,11,.12);"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--warn)" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
-              <div><div class="arch-title">Ansible Playbook</div><div class="arch-sub">7 tasks · idempotent</div></div>
-            </div>
-            <div class="arch-node">
-              <div class="arch-icon" style="background:rgba(239,68,68,.12);"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--crit)" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg></div>
-              <div><div class="arch-title">Nagios Core 4.4.6</div><div class="arch-sub">HTTP checks · event handlers</div></div>
-            </div>
-          </div>
+
+        <!-- Part 2: Interactive System Topology Diagram -->
+        <div style="font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--text-3);margin-bottom:10px;">2. Live Traffic, Monitoring &amp; Auto-Remediation Topology</div>
+        <div class="topo-wrap">
+          <svg class="topo-svg" viewBox="0 0 880 410" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="InfraSync interactive system architecture diagram">
+            <defs>
+              <marker id="arrow-mint" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                <path d="M 0 1 L 10 5 L 0 9 z" fill="#3FAF82"/>
+              </marker>
+              <marker id="arrow-lime" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                <path d="M 0 1 L 10 5 L 0 9 z" fill="#B6FF58"/>
+              </marker>
+              <marker id="arrow-warn" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                <path d="M 0 1 L 10 5 L 0 9 z" fill="#F59E0B"/>
+              </marker>
+              <marker id="arrow-crit" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                <path d="M 0 1 L 10 5 L 0 9 z" fill="#EF4444"/>
+              </marker>
+            </defs>
+
+            <!-- lab-net container zone -->
+            <rect x="220" y="18" width="420" height="252" rx="18" fill="rgba(63,175,130,0.03)" stroke="rgba(63,175,130,0.25)" stroke-dasharray="5 5"/>
+            <text x="236" y="38" fill="#5FD4A4" font-family="JetBrains Mono, monospace" font-size="11" font-weight="600">Docker Bridge Network: lab-net</text>
+
+            <!-- Connectors: Client -> HAProxy -->
+            <path d="M 150 112 L 235 112" stroke="#3FAF82" stroke-width="2" class="flow-anim" marker-end="url(#arrow-mint)"/>
+            <text x="166" y="102" fill="#8A8A92" font-family="JetBrains Mono, monospace" font-size="10">HTTP :8080</text>
+
+            <!-- Connectors: HAProxy -> web1/web2/web3 -->
+            <path d="M 390 95 C 430 95, 430 72, 468 72" stroke="#3B82F6" stroke-width="2" fill="none" class="flow-anim" marker-end="url(#arrow-mint)"/>
+            <path d="M 390 112 L 468 112" stroke="#10B981" stroke-width="2" fill="none" class="flow-anim" marker-end="url(#arrow-mint)"/>
+            <path d="M 390 129 C 430 129, 430 152, 468 152" stroke="#F59E0B" stroke-width="2" fill="none" class="flow-anim" marker-end="url(#arrow-mint)"/>
+            <text x="398" y="84" fill="#8A8A92" font-family="JetBrains Mono, monospace" font-size="9">RR</text>
+
+            <!-- Connectors: Control Plane <-> Redis -->
+            <path d="M 390 218 L 468 218" stroke="#3FAF82" stroke-width="1.8" stroke-dasharray="4 4" marker-end="url(#arrow-mint)"/>
+            <text x="406" y="210" fill="#8A8A92" font-family="JetBrains Mono, monospace" font-size="9">state</text>
+
+            <!-- Connectors: Control Plane -> Prometheus -> Grafana -->
+            <path d="M 622 218 L 675 218 C 695 218, 695 112, 675 112" stroke="none"/>
+            <path d="M 315 248 L 315 282 L 668 282 L 668 158 L 690 158" stroke="#F59E0B" stroke-width="1.6" fill="none" class="flow-anim" marker-end="url(#arrow-warn)"/>
+            <text x="455" y="276" fill="#8A8A92" font-family="JetBrains Mono, monospace" font-size="9">scrape /metrics (:5000)</text>
+            <path d="M 770 126 L 770 158" stroke="#F59E0B" stroke-width="1.8" class="flow-anim" marker-end="url(#arrow-warn)"/>
+
+            <!-- Connectors: Nagios -> web1..3 (HTTP check) & Nagios -> Remediation -> Docker start -->
+            <path d="M 545 316 L 545 178" stroke="#EF4444" stroke-width="1.6" stroke-dasharray="4 4" fill="none" marker-end="url(#arrow-crit)"/>
+            <text x="552" y="255" fill="#EF4444" font-family="JetBrains Mono, monospace" font-size="9">check_http (1m)</text>
+            <path d="M 455 348 L 392 348" stroke="#B6FF58" stroke-width="2" class="flow-anim" marker-end="url(#arrow-lime)"/>
+            <text x="398" y="339" fill="#B6FF58" font-family="JetBrains Mono, monospace" font-size="9">HARD</text>
+            <path d="M 235 348 L 165 348 L 165 152 L 468 152" stroke="none"/>
+            <path d="M 310 316 L 310 296 L 620 296 L 620 112 L 605 112" stroke="#B6FF58" stroke-width="1.8" fill="none" class="flow-anim" marker-end="url(#arrow-lime)"/>
+            <text x="330" y="308" fill="#B6FF58" font-family="JetBrains Mono, monospace" font-size="9">sudo docker start webN (if remediation.enabled)</text>
+
+            <!-- NODE: User / Browser -->
+            <g class="topo-node-g" data-arch="client" onclick="selectArchNode('client')">
+              <rect class="node-box" x="18" y="80" width="132" height="64" rx="14" fill="#17161B" stroke="rgba(255,255,255,0.12)"/>
+              <text x="32" y="105" fill="#F2F5F3" font-family="Manrope, sans-serif" font-size="13" font-weight="700">User / Browser</text>
+              <text x="32" y="125" fill="#8A8A92" font-family="JetBrains Mono, monospace" font-size="10">curl / :8080</text>
+            </g>
+
+            <!-- NODE: HAProxy -->
+            <g class="topo-node-g" data-arch="haproxy" onclick="selectArchNode('haproxy')">
+              <rect class="node-box" x="240" y="76" width="150" height="72" rx="14" fill="#1C1C21" stroke="#3FAF82"/>
+              <text x="254" y="101" fill="#5FD4A4" font-family="Manrope, sans-serif" font-size="13" font-weight="700">HAProxy 2.8 LTS</text>
+              <text x="254" y="119" fill="#A8A8B0" font-family="JetBrains Mono, monospace" font-size="10">:8080 roundrobin</text>
+              <text x="254" y="134" fill="#8A8A92" font-family="JetBrains Mono, monospace" font-size="10">:8404/stats · 2s</text>
+            </g>
+
+            <!-- NODE: web1 -->
+            <g class="topo-node-g" data-arch="web1" onclick="selectArchNode('web1')">
+              <rect class="node-box" x="472" y="50" width="132" height="42" rx="10" fill="#17161B" stroke="#3B82F6"/>
+              <circle cx="488" cy="71" r="4" fill="#3B82F6"/>
+              <text x="500" y="75" fill="#F2F5F3" font-family="JetBrains Mono, monospace" font-size="12" font-weight="600">web1 :8081</text>
+            </g>
+
+            <!-- NODE: web2 -->
+            <g class="topo-node-g" data-arch="web2" onclick="selectArchNode('web2')">
+              <rect class="node-box" x="472" y="96" width="132" height="42" rx="10" fill="#17161B" stroke="#10B981"/>
+              <circle cx="488" cy="117" r="4" fill="#10B981"/>
+              <text x="500" y="121" fill="#F2F5F3" font-family="JetBrains Mono, monospace" font-size="12" font-weight="600">web2 :8082</text>
+            </g>
+
+            <!-- NODE: web3 -->
+            <g class="topo-node-g" data-arch="web3" onclick="selectArchNode('web3')">
+              <rect class="node-box" x="472" y="142" width="132" height="42" rx="10" fill="#17161B" stroke="#F59E0B"/>
+              <circle cx="488" cy="163" r="4" fill="#F59E0B"/>
+              <text x="500" y="167" fill="#F2F5F3" font-family="JetBrains Mono, monospace" font-size="12" font-weight="600">web3 :8083</text>
+            </g>
+
+            <!-- NODE: Control Plane -->
+            <g class="topo-node-g" data-arch="controlplane" onclick="selectArchNode('controlplane')">
+              <rect class="node-box" x="240" y="188" width="150" height="60" rx="14" fill="#1C1C21" stroke="rgba(255,255,255,0.14)"/>
+              <text x="254" y="212" fill="#F2F5F3" font-family="Manrope, sans-serif" font-size="12.5" font-weight="700">Control Plane</text>
+              <text x="254" y="230" fill="#8A8A92" font-family="JetBrains Mono, monospace" font-size="10">Flask :5000 · Chaos</text>
+            </g>
+
+            <!-- NODE: Redis -->
+            <g class="topo-node-g" data-arch="redis" onclick="selectArchNode('redis')">
+              <rect class="node-box" x="472" y="196" width="132" height="48" rx="12" fill="#17161B" stroke="rgba(239,68,68,0.45)"/>
+              <text x="488" y="218" fill="#F2F5F3" font-family="Manrope, sans-serif" font-size="12.5" font-weight="700">Redis 7</text>
+              <text x="488" y="234" fill="#8A8A92" font-family="JetBrains Mono, monospace" font-size="10">:6379 hit state</text>
+            </g>
+
+            <!-- NODE: Prometheus -->
+            <g class="topo-node-g" data-arch="prometheus" onclick="selectArchNode('prometheus')">
+              <rect class="node-box" x="694" y="66" width="166" height="60" rx="14" fill="#17161B" stroke="rgba(245,158,11,0.5)"/>
+              <text x="710" y="91" fill="#F59E0B" font-family="Manrope, sans-serif" font-size="13" font-weight="700">Prometheus</text>
+              <text x="710" y="110" fill="#8A8A92" font-family="JetBrains Mono, monospace" font-size="10">:9090 · metrics</text>
+            </g>
+
+            <!-- NODE: Grafana -->
+            <g class="topo-node-g" data-arch="grafana" onclick="selectArchNode('grafana')">
+              <rect class="node-box" x="694" y="162" width="166" height="60" rx="14" fill="#17161B" stroke="rgba(245,158,11,0.5)"/>
+              <text x="710" y="187" fill="#F2F5F3" font-family="Manrope, sans-serif" font-size="13" font-weight="700">Grafana</text>
+              <text x="710" y="206" fill="#8A8A92" font-family="JetBrains Mono, monospace" font-size="10">:3000 · dashboards</text>
+            </g>
+
+            <!-- NODE: Nagios Core 4 -->
+            <g class="topo-node-g" data-arch="nagios" onclick="selectArchNode('nagios')">
+              <rect class="node-box" x="458" y="316" width="182" height="68" rx="14" fill="#17161B" stroke="#EF4444"/>
+              <text x="474" y="341" fill="#EF4444" font-family="Manrope, sans-serif" font-size="13" font-weight="700">Nagios Core 4.4.6</text>
+              <text x="474" y="359" fill="#A8A8B0" font-family="JetBrains Mono, monospace" font-size="10">/nagios4/ · 3x fail</text>
+              <text x="474" y="373" fill="#8A8A92" font-family="JetBrains Mono, monospace" font-size="10">SOFT 1/3..3/3 &rarr; HARD</text>
+            </g>
+
+            <!-- NODE: restart_container.sh -->
+            <g class="topo-node-g" data-arch="remediation" onclick="selectArchNode('remediation')">
+              <rect class="node-box" x="210" y="316" width="180" height="68" rx="14" fill="#202715" stroke="#B6FF58"/>
+              <text x="224" y="341" fill="#B6FF58" font-family="Manrope, sans-serif" font-size="12.5" font-weight="700">restart_container.sh</text>
+              <text x="224" y="359" fill="#A8A8B0" font-family="JetBrains Mono, monospace" font-size="10">remediation.enabled</text>
+              <text x="224" y="373" fill="#8A8A92" font-family="JetBrains Mono, monospace" font-size="10">scoped sudo docker start</text>
+            </g>
+          </svg>
         </div>
-        <div class="arch-connector"></div>
-        <!-- Tier 3 -->
-        <div class="arch-tier">
-          <div class="arch-tier-label">Tier 3 — Load Balancing (Docker + HAProxy)</div>
-          <div class="arch-tier-cards">
-            <div class="arch-node">
-              <div class="arch-icon" style="background:rgba(63,175,130,.12);"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--mint)" stroke-width="2"><path d="M18 20V10M12 20V4M6 20v-6"/></svg></div>
-              <div><div class="arch-title">HAProxy 2.8 LTS</div><div class="arch-sub">:8080 roundrobin · :8404 stats</div></div>
-            </div>
-            <div class="arch-node" style="--node-rgb:59,130,246;">
-              <div class="arch-icon" style="background:rgba(59,130,246,.12);"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--web1)" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/></svg></div>
-              <div><div class="arch-title">web1 · web2 · web3</div><div class="arch-sub">Nginx :8081 :8082 :8083 · lab-net</div></div>
-            </div>
+
+        <!-- Part 3: Selected Component Inspector -->
+        <div class="topo-inspector" id="arch-inspector">
+          <div>
+            <div class="insp-badge" id="insp-tier">Tier 1 &middot; Provisioning</div>
+            <div class="insp-title" id="insp-title">Terraform v1.6+</div>
+            <div class="insp-port" id="insp-port">7 Docker resources + lab-net</div>
           </div>
-        </div>
-        <div class="arch-connector"></div>
-        <!-- Tier 4 -->
-        <div class="arch-tier">
-          <div class="arch-tier-label">Tier 4 — Self-Healing (Bash + Sudo)</div>
-          <div class="arch-tier-cards">
-            <div class="arch-node">
-              <div class="arch-icon" style="background:rgba(182,255,88,.08);"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--lime)" stroke-width="2"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg></div>
-              <div><div class="arch-title">restart_container.sh</div><div class="arch-sub">HARD CRITICAL → docker start webN</div></div>
-            </div>
-            <div class="arch-node">
-              <div class="arch-icon" style="background:rgba(63,175,130,.12);"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--mint)" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg></div>
-              <div><div class="arch-title">Sudoers Scope</div><div class="arch-sub">NOPASSWD docker start web[123] only</div></div>
-            </div>
+          <div>
+            <div class="insp-label">Connected To</div>
+            <div class="insp-text" id="insp-conn">Provisions <code>lab-net</code>, <code>web1</code>, <code>web2</code>, <code>web3</code>, <code>haproxy</code>, <code>redis</code>, and <code>controlplane</code>. Hands off OS-level config to Ansible.</div>
+          </div>
+          <div>
+            <div class="insp-label">How It Works</div>
+            <div class="insp-text" id="insp-how">Declaratively creates the isolated Docker bridge network and all container infrastructure on the Ubuntu 24.04 VM. Re-running <code>terraform plan</code> is idempotent (0 changes).</div>
+            <div id="insp-link-wrap" style="margin-top:10px;"></div>
           </div>
         </div>
       </div>
@@ -1239,94 +1403,30 @@ button{font-family:var(--font-ui);cursor:pointer;border:none;background:none;}
       </div>
     </div><!-- /tests -->
 
-    <!-- ══ COMMANDS SECTION ══ -->
-    <div id="section-commands" style="display:none;">
-      <div class="card">
-        <div class="card-title">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
-          Commands Reference
-        </div>
-        <div class="cmd-block">
-          <div class="cmd-label">Provision infrastructure</div>
-          <div class="cmd-code">cd ~/InfraSync/terraform
-terraform init
-terraform apply -auto-approve</div>
-          <button class="cmd-copy" onclick="copyCmd('cd ~/InfraSync/terraform\nterraform init\nterraform apply -auto-approve',this)">Copy</button>
-        </div>
-        <div class="cmd-block">
-          <div class="cmd-label">Run Ansible playbook</div>
-          <div class="cmd-code">cd ~/InfraSync/ansible
-ansible-playbook -i inventory.ini playbook.yml --ask-become-pass</div>
-          <button class="cmd-copy" onclick="copyCmd('cd ~/InfraSync/ansible\nansible-playbook -i inventory.ini playbook.yml --ask-become-pass',this)">Copy</button>
-        </div>
-        <div class="cmd-block">
-          <div class="cmd-label">Verify round-robin (6 requests)</div>
-          <div class="cmd-code">for i in $(seq 1 6); do curl -s http://192.168.59.138:8080 | grep -o "web[123]"; done</div>
-          <button class="cmd-copy" onclick="copyCmd('for i in $(seq 1 6); do curl -s http://192.168.59.138:8080 | grep -o \"web[123]\"; done',this)">Copy</button>
-        </div>
-        <div class="cmd-block">
-          <div class="cmd-label">Simulate failure (TC06 — remediation OFF)</div>
-          <div class="cmd-code">sudo rm -f /etc/nagios4/remediation.enabled
-docker stop web1
-# Wait 3 min — Nagios HARD but no restart</div>
-          <button class="cmd-copy" onclick="copyCmd('sudo rm -f /etc/nagios4/remediation.enabled\ndocker stop web1',this)">Copy</button>
-        </div>
-        <div class="cmd-block">
-          <div class="cmd-label">Enable auto-remediation (TC07)</div>
-          <div class="cmd-code">sudo touch /etc/nagios4/remediation.enabled
-docker stop web1
-# Wait ~3 min — Nagios HARD CRITICAL → restart_container.sh → docker start web1</div>
-          <button class="cmd-copy" onclick="copyCmd('sudo touch /etc/nagios4/remediation.enabled\ndocker stop web1',this)">Copy</button>
-        </div>
-        <div class="cmd-block">
-          <div class="cmd-label">Verify idempotency</div>
-          <div class="cmd-code">terraform plan        # expect: No changes
-ansible-playbook -i inventory.ini playbook.yml   # expect: changed=0</div>
-          <button class="cmd-copy" onclick="copyCmd('terraform plan\nansible-playbook -i inventory.ini playbook.yml',this)">Copy</button>
-        </div>
-        <div class="cmd-block">
-          <div class="cmd-label">Check container status</div>
-          <div class="cmd-code">docker ps --format "table {{.Names}}\t{{.Status}}\t{{.Ports}}"</div>
-          <button class="cmd-copy" onclick='copyCmd("docker ps --format \"table {{.Names}}\\t{{.Status}}\\t{{.Ports}}\"",this)'>Copy</button>
-        </div>
-      </div>
-    </div><!-- /commands -->
-
-    <!-- ══ VIVA SECTION ══ -->
-    <div id="section-viva" style="display:none;">
-      <div class="card">
-        <div class="card-title">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-          Viva Q&amp;A Bank
-        </div>
-        <div id="viva-list"></div>
-      </div>
-    </div><!-- /viva -->
-
   </main>
 </div><!-- /body-wrap -->
 
 <!-- Bottom nav (mobile) -->
 <nav class="bottom-nav" role="navigation" aria-label="Mobile navigation">
-  <button class="bottom-nav-btn active" onclick="switchSection('dashboard',null)">
+  <button class="bottom-nav-btn active" data-section="dashboard" onclick="switchSection('dashboard',null)">
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
     Dash
   </button>
-  <button class="bottom-nav-btn" onclick="switchSection('lb',null)">
+  <button class="bottom-nav-btn" data-section="architecture" onclick="switchSection('architecture',null)">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4"/></svg>
+    Arch
+  </button>
+  <button class="bottom-nav-btn" data-section="lb" onclick="switchSection('lb',null)">
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 20V10M12 20V4M6 20v-6"/></svg>
     LB
   </button>
-  <button class="bottom-nav-btn" onclick="switchSection('tests',null)">
+  <button class="bottom-nav-btn" data-section="monitoring" onclick="switchSection('monitoring',null)">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+    Monitor
+  </button>
+  <button class="bottom-nav-btn" data-section="tests" onclick="switchSection('tests',null)">
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="m9 11 3 3L22 4"/></svg>
     Tests
-  </button>
-  <button class="bottom-nav-btn" onclick="switchSection('commands',null)">
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="4 17 10 11 4 5"/></svg>
-    CLI
-  </button>
-  <button class="bottom-nav-btn" onclick="switchSection('viva',null)">
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/></svg>
-    Viva
   </button>
 </nav>
 </div><!-- /shell -->
@@ -1366,7 +1466,7 @@ var VIVA = [
 ];
 
 /* ═══════════════════════════════════════════════
-   NAV
+   NAV & ARCHITECTURE INSPECTOR
 ═══════════════════════════════════════════════ */
 var currentSection = "dashboard";
 function switchSection(name, btn) {
@@ -1374,13 +1474,161 @@ function switchSection(name, btn) {
     el.style.display = "none";
   });
   var sec = document.getElementById("section-" + name);
-  if (sec) sec.style.display = "";
-  document.querySelectorAll('.nav-pill').forEach(function(p){ p.classList.remove("active"); });
-  document.querySelectorAll('.rail-icon').forEach(function(r){ r.classList.remove("active"); });
-  document.querySelectorAll('.bottom-nav-btn').forEach(function(b){ b.classList.remove("active"); });
+  if (sec) sec.style.display = "block";
+  document.querySelectorAll('.nav-pill, .rail-icon, .bottom-nav-btn').forEach(function(el){
+    if (el.getAttribute("data-section") === name) {
+      el.classList.add("active");
+    } else if (el.hasAttribute("data-section")) {
+      el.classList.remove("active");
+    }
+  });
   if (btn) btn.classList.add("active");
   currentSection = name;
   if (name === "monitoring") renderNagiosSegs("nagios-segs-mon");
+}
+
+var ARCH_DETAILS = {
+  git: {
+    tier: "Step 01 · Source Control",
+    title: "Git Repository (InfraSync)",
+    port: "main branch · GitHub",
+    conn: "Feeds Terraform HCL (terraform/), Ansible playbook (ansible/), HAProxy config, and Flask Control Plane.",
+    how: "Single source of truth for infrastructure-as-code, configuration management, and dashboard assets. Pulled onto the Ubuntu 24.04 VM."
+  },
+  terraform: {
+    tier: "Step 02 · Provisioning",
+    title: "Terraform v1.6+",
+    port: "7 Docker resources + lab-net",
+    conn: "Creates lab-net bridge, web1 (:8081), web2 (:8082), web3 (:8083), HAProxy (:8080/:8404), Redis (:6379), and Control Plane (:5000).",
+    how: "Declaratively builds the entire container topology on the Ubuntu 24.04 VM. Re-running terraform plan produces 0 changes (idempotent)."
+  },
+  ansible: {
+    tier: "Step 03 · Configuration",
+    title: "Ansible Core (7 Tasks)",
+    port: "inventory.ini · playbook.yml",
+    conn: "Configures Nagios Core 4.4.6 on the VM, deploys HTTP checks for web1/web2/web3, installs restart_container.sh, and writes /etc/sudoers.d/.",
+    how: "Idempotent OS-level automation (changed=0 on re-run) that wires monitoring and scoped auto-remediation onto the provisioned cluster."
+  },
+  client: {
+    tier: "Ingress · Traffic Source",
+    title: "User / Browser / curl",
+    port: "http://192.168.59.138:8080",
+    conn: "Sends HTTP requests to HAProxy on :8080 (or hits individual nodes directly on :8081–:8083).",
+    how: "Every reload or curl request is distributed across healthy backend containers in round-robin order.",
+    link: "http://192.168.59.138:8080",
+    linkLabel: "Open :8080 App"
+  },
+  haproxy: {
+    tier: "Tier 3 · Load Balancer",
+    title: "HAProxy 2.8 LTS",
+    port: ":8080 (App) · :8404/stats",
+    conn: "Receives external traffic on :8080 and balances across web1, web2, web3 over lab-net.",
+    how: "Runs roundrobin with active HTTP health probes (inter 2s, fall 2, rise 2). Drops a failed node in ~4s and restores it 4s after recovery.",
+    link: "http://192.168.59.138:8404/stats",
+    linkLabel: "Open HAProxy Stats"
+  },
+  web1: {
+    tier: "Backend Node 1",
+    title: "Nginx Container · web1",
+    port: ":8081 (host) -> :80 (lab-net)",
+    conn: "Served by HAProxy (:8080), monitored by Nagios Core 4, controlled by Control Plane chaos API.",
+    how: "Serves its own themed status page rendered from web.html.tpl with TC03 verification marker.",
+    link: "http://192.168.59.138:8081",
+    linkLabel: "Open web1 :8081"
+  },
+  web2: {
+    tier: "Backend Node 2",
+    title: "Nginx Container · web2",
+    port: ":8082 (host) -> :80 (lab-net)",
+    conn: "Served by HAProxy (:8080), monitored by Nagios Core 4, controlled by Control Plane chaos API.",
+    how: "Serves its own themed status page rendered from web.html.tpl on the lab-net bridge.",
+    link: "http://192.168.59.138:8082",
+    linkLabel: "Open web2 :8082"
+  },
+  web3: {
+    tier: "Backend Node 3",
+    title: "Nginx Container · web3",
+    port: ":8083 (host) -> :80 (lab-net)",
+    conn: "Served by HAProxy (:8080), monitored by Nagios Core 4, controlled by Control Plane chaos API.",
+    how: "Serves its own themed status page rendered from web.html.tpl on the lab-net bridge.",
+    link: "http://192.168.59.138:8083",
+    linkLabel: "Open web3 :8083"
+  },
+  controlplane: {
+    tier: "Control & Chaos API",
+    title: "Flask Control Plane",
+    port: ":5000 · /api/* · /metrics",
+    conn: "Serves this dashboard at /, talks to Docker socket for chaos crash/revive, stores hit counters in Redis, exports /metrics to Prometheus.",
+    how: "Provides live cluster visibility and controlled fault injection without modifying the backend Nginx pages.",
+    link: "http://192.168.59.138:5000",
+    linkLabel: "Open Control Plane :5000"
+  },
+  redis: {
+    tier: "Shared State Store",
+    title: "Redis 7",
+    port: ":6379 (lab-net)",
+    conn: "Connected to the Flask Control Plane on lab-net.",
+    how: "Persists shared cluster hit counts and per-node request counters across container reloads."
+  },
+  prometheus: {
+    tier: "Observability · Metrics",
+    title: "Prometheus",
+    port: ":9090",
+    conn: "Scrapes /metrics from Control Plane (:5000) and feeds time-series data to Grafana (:3000).",
+    how: "Collects infrasync_total_hits and infrasync_node_hits metrics for live alerting and graphing.",
+    link: "http://192.168.59.138:9090",
+    linkLabel: "Open Prometheus :9090"
+  },
+  grafana: {
+    tier: "Observability · Dashboards",
+    title: "Grafana",
+    port: ":3000",
+    conn: "Queries Prometheus (:9090) as its data source.",
+    how: "Visualizes real-time cluster hits, per-node distribution, and traffic trends.",
+    link: "http://192.168.59.138:3000",
+    linkLabel: "Open Grafana :3000"
+  },
+  nagios: {
+    tier: "Tier 2 · Monitoring",
+    title: "Nagios Core 4.4.6",
+    port: "http://192.168.59.138/nagios4/",
+    conn: "Polls web1, web2, web3 via HTTP every 1 minute; triggers restart_container.sh on HARD CRITICAL.",
+    how: "Requires 3 consecutive failed checks (SOFT 1/3, 2/3, 3/3) before entering HARD CRITICAL to prevent flapping restarts.",
+    link: "http://192.168.59.138/nagios4/",
+    linkLabel: "Open Nagios UI"
+  },
+  remediation: {
+    tier: "Tier 4 · Self-Healing",
+    title: "restart_container.sh",
+    port: "/etc/nagios4/remediation.enabled",
+    conn: "Triggered by Nagios HARD CRITICAL; runs scoped sudo docker start webN to restore crashed web1/web2/web3.",
+    how: "Checks two guards before acting: (1) killswitch file /etc/nagios4/remediation.enabled exists, and (2) target is strictly web1, web2, or web3."
+  }
+};
+
+function selectArchNode(key) {
+  var d = ARCH_DETAILS[key];
+  if (!d) return;
+  document.querySelectorAll('.pipe-step, .topo-node-g').forEach(function(el){
+    if (el.getAttribute("data-arch") === key) el.classList.add("selected");
+    else el.classList.remove("selected");
+  });
+  var t = document.getElementById("insp-tier");
+  var ti = document.getElementById("insp-title");
+  var p = document.getElementById("insp-port");
+  var c = document.getElementById("insp-conn");
+  var h = document.getElementById("insp-how");
+  var lw = document.getElementById("insp-link-wrap");
+  if (t) t.textContent = d.tier;
+  if (ti) ti.textContent = d.title;
+  if (p) p.textContent = d.port;
+  if (c) c.textContent = d.conn;
+  if (h) h.textContent = d.how;
+  if (lw) {
+    lw.innerHTML = d.link
+      ? '<a class="tool-link primary-link" href="' + d.link + '" target="_blank">' + d.linkLabel + ' &rarr;</a>'
+      : '';
+  }
 }
 
 /* ═══════════════════════════════════════════════

@@ -82,7 +82,7 @@
       box-shadow: 0 0 6px var(--success);
       animation: pulse 2s infinite;
     }
-    @keyframes pulse { 0%,100%{ opacity:1; } 50%{ opacity:0.4; } }
+    @keyframes pulse { 0%,100%{{ opacity:1; }} 50%{{ opacity:0.4; }} }
 
     /* ── Layout ──────────────────────────────────────────────────────── */
     .wrapper {

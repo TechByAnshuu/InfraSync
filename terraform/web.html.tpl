@@ -6,7 +6,7 @@
   <title>InfraSync Â· ${name}</title>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
   <style>
-    :root {{
+    :root {
       --primary:      ${color};
       --primary-rgb:  ${color_rgb};
       --bg:           #060a12;
@@ -21,11 +21,11 @@
       --warning:      #f59e0b;
       --info:         #38bdf8;
       --font-mono:    'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
-    }}
+    }
 
-    * {{ box-sizing: border-box; margin: 0; padding: 0; }}
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
-    body {{
+    body {
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
       background: var(--bg);
       color: var(--text);
@@ -33,10 +33,10 @@
       background-image:
         radial-gradient(ellipse 80% 50% at 20% 10%, rgba(var(--primary-rgb), 0.12) 0%, transparent 60%),
         radial-gradient(ellipse 60% 40% at 80% 90%, rgba(var(--primary-rgb), 0.06) 0%, transparent 50%);
-    }}
+    }
 
     /* â”€â”€ Top bar â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
-    .topbar {{
+    .topbar {
       position: sticky;
       top: 0;
       z-index: 100;
@@ -47,17 +47,17 @@
       background: rgba(6,10,18,0.85);
       backdrop-filter: blur(16px);
       border-bottom: 1px solid var(--border);
-    }}
-    .topbar-brand {{
+    }
+    .topbar-brand {
       display: flex;
       align-items: center;
       gap: 10px;
       font-size: 0.95rem;
       font-weight: 700;
       letter-spacing: -0.01em;
-    }}
-    .topbar-brand svg {{ color: var(--primary); }}
-    .node-badge {{
+    }
+    .topbar-brand svg { color: var(--primary); }
+    .node-badge {
       background: rgba(var(--primary-rgb), 0.15);
       color: var(--primary);
       border: 1px solid rgba(var(--primary-rgb), 0.35);
@@ -66,51 +66,51 @@
       font-size: 0.75rem;
       font-weight: 700;
       font-family: var(--font-mono);
-    }}
-    .topbar-status {{
+    }
+    .topbar-status {
       display: flex;
       align-items: center;
       gap: 20px;
       font-size: 0.8rem;
       color: var(--muted);
-    }}
-    .status-dot {{
+    }
+    .status-dot {
       display: inline-block;
       width: 7px; height: 7px;
       border-radius: 50%;
       background: var(--success);
       box-shadow: 0 0 6px var(--success);
       animation: pulse 2s infinite;
-    }}
-    @keyframes pulse {{ 0%,100%{{ opacity:1; }} 50%{{ opacity:0.4; }} }}
+    }
+    @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
 
     /* â”€â”€ Layout â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
-    .wrapper {{
+    .wrapper {
       max-width: 1340px;
       margin: 0 auto;
       padding: 28px 20px 60px;
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 20px;
-    }}
-    .full-width {{ grid-column: 1 / -1; }}
+    }
+    .full-width { grid-column: 1 / -1; }
 
     /* â”€â”€ Cards â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
-    .card {{
+    .card {
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: 16px;
       padding: 22px 24px;
       transition: border-color .2s;
-    }}
-    .card:hover {{ border-color: var(--border-hover); }}
-    .card-header {{
+    }
+    .card:hover { border-color: var(--border-hover); }
+    .card-header {
       display: flex;
       align-items: center;
       justify-content: space-between;
       margin-bottom: 18px;
-    }}
-    .card-title {{
+    }
+    .card-title {
       display: flex;
       align-items: center;
       gap: 8px;
@@ -119,11 +119,11 @@
       text-transform: uppercase;
       letter-spacing: .08em;
       color: var(--muted);
-    }}
-    .card-title svg {{ color: var(--primary); }}
+    }
+    .card-title svg { color: var(--primary); }
 
     /* â”€â”€ Hero â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
-    .hero {{
+    .hero {
       grid-column: 1 / -1;
       background: linear-gradient(135deg,
         rgba(var(--primary-rgb), 0.1) 0%,
@@ -135,39 +135,39 @@
       align-items: center;
       justify-content: space-between;
       gap: 24px;
-    }}
-    .hero-left {{}}
-    .hero-serving {{
+    }
+    .hero-left {}
+    .hero-serving {
       font-size: 0.72rem;
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: .12em;
       color: var(--primary);
       margin-bottom: 8px;
-    }}
-    .hero-title {{
+    }
+    .hero-title {
       font-size: 2.6rem;
       font-weight: 900;
       letter-spacing: -0.04em;
       line-height: 1;
       margin-bottom: 10px;
-    }}
-    .hero-title span {{ color: var(--primary); }}
-    .hero-subtitle {{
+    }
+    .hero-title span { color: var(--primary); }
+    .hero-subtitle {
       font-size: 0.88rem;
       color: var(--muted);
       line-height: 1.6;
       max-width: 500px;
-    }}
-    .hero-subtitle strong {{ color: var(--text); }}
-    .hero-right {{
+    }
+    .hero-subtitle strong { color: var(--text); }
+    .hero-right {
       display: flex;
       flex-direction: column;
       align-items: flex-end;
       gap: 10px;
       flex-shrink: 0;
-    }}
-    .health-badge {{
+    }
+    .health-badge {
       display: flex;
       align-items: center;
       gap: 7px;
@@ -178,55 +178,55 @@
       border-radius: 999px;
       font-size: 0.78rem;
       font-weight: 700;
-    }}
-    .hero-meta {{
+    }
+    .hero-meta {
       font-size: 0.75rem;
       color: var(--muted);
       text-align: right;
       font-family: var(--font-mono);
-    }}
+    }
 
     /* â”€â”€ Metrics grid â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
-    .metrics-row {{
+    .metrics-row {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       gap: 12px;
       grid-column: 1 / -1;
-    }}
-    .metric-tile {{
+    }
+    .metric-tile {
       background: var(--surface2);
       border: 1px solid var(--border);
       border-radius: 12px;
       padding: 16px 18px;
-    }}
-    .metric-label {{
+    }
+    .metric-label {
       font-size: 0.7rem;
       text-transform: uppercase;
       letter-spacing: .08em;
       color: var(--muted);
       margin-bottom: 6px;
-    }}
-    .metric-value {{
+    }
+    .metric-value {
       font-size: 1.7rem;
       font-weight: 800;
       font-family: var(--font-mono);
       color: var(--text);
       line-height: 1;
-    }}
-    .metric-value.accent {{ color: var(--primary); }}
-    .metric-sub {{
+    }
+    .metric-value.accent { color: var(--primary); }
+    .metric-sub {
       font-size: 0.72rem;
       color: var(--muted);
       margin-top: 4px;
-    }}
+    }
 
     /* â”€â”€ Cluster status panel â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
-    .cluster-nodes {{
+    .cluster-nodes {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 10px;
-    }}
-    .node-chip {{
+    }
+    .node-chip {
       background: var(--surface2);
       border: 1px solid var(--border);
       border-radius: 12px;
@@ -236,80 +236,80 @@
       gap: 10px;
       transition: all .2s;
       cursor: default;
-    }}
-    .node-chip.active {{
+    }
+    .node-chip.active {
       border-color: rgba(var(--primary-rgb), 0.5);
       background: rgba(var(--primary-rgb), 0.08);
       box-shadow: 0 0 20px rgba(var(--primary-rgb), 0.1);
-    }}
-    .node-chip.down {{
+    }
+    .node-chip.down {
       border-color: rgba(239,68,68,0.4);
       background: rgba(239,68,68,0.06);
       opacity: 0.7;
-    }}
-    .chip-dot {{
+    }
+    .chip-dot {
       width: 9px; height: 9px;
       border-radius: 50%;
       background: var(--muted);
       flex-shrink: 0;
       transition: background .3s;
-    }}
-    .node-chip.active .chip-dot {{
+    }
+    .node-chip.active .chip-dot {
       background: var(--primary);
       box-shadow: 0 0 8px var(--primary);
       animation: pulse 2s infinite;
-    }}
-    .node-chip.down .chip-dot {{
+    }
+    .node-chip.down .chip-dot {
       background: var(--danger);
-    }}
-    .chip-info {{}}
-    .chip-name {{
+    }
+    .chip-info {}
+    .chip-name {
       display: block;
       font-size: 0.85rem;
       font-weight: 700;
       font-family: var(--font-mono);
-    }}
-    .chip-port {{
+    }
+    .chip-port {
       font-size: 0.7rem;
       color: var(--muted);
-    }}
-    .chip-status-text {{
+    }
+    .chip-status-text {
       margin-left: auto;
       font-size: 0.65rem;
       text-transform: uppercase;
       font-weight: 700;
       letter-spacing: .05em;
-    }}
+    }
 
     /* â”€â”€ Chaos Engineering Panel â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
-    .chaos-grid {{
+    .chaos-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 12px;
-    }}
-    .chaos-node {{
+    }
+    .chaos-node {
       background: var(--surface2);
       border: 1px solid var(--border);
       border-radius: 12px;
       padding: 16px;
       text-align: center;
-    }}
-    .chaos-node-name {{
+    }
+    .chaos-node-name {
       font-size: 0.9rem;
       font-weight: 700;
       font-family: var(--font-mono);
       margin-bottom: 4px;
-    }}
-    .chaos-node-state {{
+    }
+    .chaos-node-state {
       font-size: 0.72rem;
       color: var(--muted);
       margin-bottom: 14px;
       min-height: 18px;
-    }}
-    .chaos-node-state.running {{ color: var(--success); }}
-    .chaos-node-state.stopped {{ color: var(--danger); }}
-    .chaos-btns {{ display: flex; gap: 8px; justify-content: center; }}
-    .btn-chaos-crash {{
+    }
+    .chaos-node-state.running { color: var(--success); }
+    .chaos-node-state.stopped { color: var(--danger); }
+    .chaos-btns { display: flex; gap: 8px; justify-content: center; }
+    .btn-chaos-crash {
       flex: 1;
       padding: 7px 0;
       background: rgba(239,68,68,0.1);
@@ -320,13 +320,13 @@
       font-weight: 700;
       cursor: pointer;
       transition: all .15s;
-    }}
-    .btn-chaos-crash:hover {{
+    }
+    .btn-chaos-crash:hover {
       background: rgba(239,68,68,0.2);
       border-color: rgba(239,68,68,0.6);
-    }}
-    .btn-chaos-crash:disabled {{ opacity: .4; cursor: not-allowed; }}
-    .btn-chaos-revive {{
+    }
+    .btn-chaos-crash:disabled { opacity: .4; cursor: not-allowed; }
+    .btn-chaos-revive {
       flex: 1;
       padding: 7px 0;
       background: rgba(16,185,129,0.1);
@@ -337,14 +337,14 @@
       font-weight: 700;
       cursor: pointer;
       transition: all .15s;
-    }}
-    .btn-chaos-revive:hover {{
+    }
+    .btn-chaos-revive:hover {
       background: rgba(16,185,129,0.2);
       border-color: rgba(16,185,129,0.6);
-    }}
-    .btn-chaos-revive:disabled {{ opacity: .4; cursor: not-allowed; }}
+    }
+    .btn-chaos-revive:disabled { opacity: .4; cursor: not-allowed; }
 
-    .chaos-event-log {{
+    .chaos-event-log {
       margin-top: 16px;
       background: #060a12;
       border: 1px solid var(--border);
@@ -356,20 +356,20 @@
       min-height: 60px;
       max-height: 110px;
       overflow-y: auto;
-    }}
-    .chaos-event-log .ev-crash {{ color: #f87171; }}
-    .chaos-event-log .ev-revive {{ color: #34d399; }}
+    }
+    .chaos-event-log .ev-crash { color: #f87171; }
+    .chaos-event-log .ev-revive { color: #34d399; }
 
     /* â”€â”€ Leaderboard â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
-    .leaderboard-row {{
+    .leaderboard-row {
       display: flex;
       align-items: center;
       gap: 12px;
       padding: 10px 0;
       border-bottom: 1px solid var(--border);
-    }}
-    .leaderboard-row:last-child {{ border-bottom: none; }}
-    .lb-rank {{
+    }
+    .leaderboard-row:last-child { border-bottom: none; }
+    .lb-rank {
       width: 24px; height: 24px;
       border-radius: 6px;
       background: rgba(var(--primary-rgb), 0.12);
@@ -380,87 +380,87 @@
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
-    }}
-    .lb-name {{
+    }
+    .lb-name {
       font-family: var(--font-mono);
       font-size: 0.82rem;
       font-weight: 700;
       flex: 1;
-    }}
-    .lb-bar-wrap {{
+    }
+    .lb-bar-wrap {
       flex: 2;
       height: 6px;
       background: rgba(255,255,255,0.05);
       border-radius: 999px;
       overflow: hidden;
-    }}
-    .lb-bar {{
+    }
+    .lb-bar {
       height: 100%;
       border-radius: 999px;
       background: var(--primary);
       transition: width 0.6s cubic-bezier(.4,0,.2,1);
-    }}
-    .lb-count {{
+    }
+    .lb-count {
       font-family: var(--font-mono);
       font-size: 0.8rem;
       font-weight: 700;
       color: var(--text);
       width: 48px;
       text-align: right;
-    }}
+    }
 
     /* â”€â”€ Chart panel â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
-    .chart-wrap {{ position: relative; height: 180px; }}
+    .chart-wrap { position: relative; height: 180px; }
 
     /* â”€â”€ CI/CD Pipeline Status â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
-    .pipeline-stages {{
+    .pipeline-stages {
       display: flex;
       align-items: center;
       gap: 0;
       margin-top: 4px;
-    }}
-    .pipeline-stage {{
+    }
+    .pipeline-stage {
       display: flex;
       align-items: center;
-    }}
-    .stage-block {{
+    }
+    .stage-block {
       display: flex;
       flex-direction: column;
       align-items: center;
       gap: 5px;
-    }}
-    .stage-icon {{
+    }
+    .stage-icon {
       width: 36px; height: 36px;
       border-radius: 10px;
       display: flex;
       align-items: center;
       justify-content: center;
       font-size: 1rem;
-    }}
-    .stage-icon.success {{
+    }
+    .stage-icon.success {
       background: rgba(16,185,129,0.12);
       border: 1px solid rgba(16,185,129,0.3);
       color: #34d399;
-    }}
-    .stage-icon.pending {{
+    }
+    .stage-icon.pending {
       background: rgba(100,116,139,0.12);
       border: 1px solid rgba(100,116,139,0.3);
       color: var(--muted);
-    }}
-    .stage-icon.running {{
+    }
+    .stage-icon.running {
       background: rgba(56,189,248,0.12);
       border: 1px solid rgba(56,189,248,0.3);
       color: #38bdf8;
       animation: pulse 1.5s infinite;
-    }}
-    .stage-name {{
+    }
+    .stage-name {
       font-size: 0.65rem;
       text-transform: uppercase;
       letter-spacing: .05em;
       color: var(--muted);
       white-space: nowrap;
-    }}
-    .pipeline-arrow {{
+    }
+    .pipeline-arrow {
       flex: 1;
       height: 1px;
       background: linear-gradient(90deg, var(--border), transparent, var(--border));
@@ -468,9 +468,9 @@
       min-width: 20px;
       position: relative;
       bottom: 11px;
-    }}
+    }
 
-    .ci-info-row {{
+    .ci-info-row {
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -479,8 +479,8 @@
       border-top: 1px solid var(--border);
       font-size: 0.75rem;
       color: var(--muted);
-    }}
-    .ci-badge {{
+    }
+    .ci-badge {
       display: inline-flex;
       align-items: center;
       gap: 5px;
@@ -488,21 +488,21 @@
       border-radius: 6px;
       font-size: 0.72rem;
       font-weight: 700;
-    }}
-    .ci-badge.passed {{
+    }
+    .ci-badge.passed {
       background: rgba(16,185,129,0.1);
       border: 1px solid rgba(16,185,129,0.3);
       color: #34d399;
-    }}
+    }
 
     /* â”€â”€ Action row â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
-    .action-row {{
+    .action-row {
       display: flex;
       gap: 10px;
       flex-wrap: wrap;
       grid-column: 1 / -1;
-    }}
-    .btn {{
+    }
+    .btn {
       display: inline-flex;
       align-items: center;
       gap: 7px;
@@ -514,28 +514,28 @@
       text-decoration: none;
       border: none;
       transition: all .15s;
-    }}
-    .btn-primary {{
+    }
+    .btn-primary {
       background: var(--primary);
       color: #000;
       box-shadow: 0 4px 16px rgba(var(--primary-rgb), 0.35);
-    }}
-    .btn-primary:hover {{ filter: brightness(1.1); transform: translateY(-1px); }}
-    .btn-secondary {{
+    }
+    .btn-primary:hover { filter: brightness(1.1); transform: translateY(-1px); }
+    .btn-secondary {
       background: var(--surface2);
       border: 1px solid var(--border);
       color: var(--text);
-    }}
-    .btn-secondary:hover {{ border-color: var(--border-hover); }}
-    .btn-danger {{
+    }
+    .btn-secondary:hover { border-color: var(--border-hover); }
+    .btn-danger {
       background: rgba(239,68,68,0.1);
       border: 1px solid rgba(239,68,68,0.3);
       color: #f87171;
-    }}
-    .btn-danger:hover {{ background: rgba(239,68,68,0.2); }}
+    }
+    .btn-danger:hover { background: rgba(239,68,68,0.2); }
 
     /* â”€â”€ Toast â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
-    #toast {{
+    #toast {
       position: fixed;
       bottom: 28px;
       right: 28px;
@@ -549,38 +549,38 @@
       z-index: 999;
       pointer-events: none;
       max-width: 320px;
-    }}
-    #toast.show {{
+    }
+    #toast.show {
       opacity: 1;
       transform: translateY(0);
-    }}
-    #toast.success {{ background:#064e3b; border:1px solid #065f46; color:#6ee7b7; }}
-    #toast.error   {{ background:#450a0a; border:1px solid #7f1d1d; color:#fca5a5; }}
-    #toast.info    {{ background:#0c1a2e; border:1px solid #1e3a5f; color:#7dd3fc; }}
+    }
+    #toast.success { background:#064e3b; border:1px solid #065f46; color:#6ee7b7; }
+    #toast.error   { background:#450a0a; border:1px solid #7f1d1d; color:#fca5a5; }
+    #toast.info    { background:#0c1a2e; border:1px solid #1e3a5f; color:#7dd3fc; }
 
     /* â”€â”€ Tech footer â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
-    .tech-footer {{
+    .tech-footer {
       grid-column: 1 / -1;
       display: flex;
       flex-wrap: wrap;
       gap: 8px;
       justify-content: center;
       padding-top: 8px;
-    }}
-    .tech-pill {{
+    }
+    .tech-pill {
       background: var(--surface2);
       border: 1px solid var(--border);
       border-radius: 999px;
       padding: 4px 14px;
       font-size: 0.72rem;
       color: var(--muted);
-    }}
-    .tech-pill span {{ color: var(--text); font-weight: 600; }}
+    }
+    .tech-pill span { color: var(--text); font-weight: 600; }
 
     /* â”€â”€ Scrollbar â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
-    ::-webkit-scrollbar {{ width: 4px; }}
-    ::-webkit-scrollbar-track {{ background: transparent; }}
-    ::-webkit-scrollbar-thumb {{ background: var(--border-hover); border-radius: 4px; }}
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: var(--border-hover); border-radius: 4px; }
   </style>
 </head>
 <body>
